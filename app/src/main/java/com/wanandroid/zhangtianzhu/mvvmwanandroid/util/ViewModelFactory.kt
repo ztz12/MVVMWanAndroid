@@ -3,8 +3,7 @@ package com.wanandroid.zhangtianzhu.mvvmwanandroid.util
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.data.source.login.RegisterRemoteSource
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.MainViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.LoginViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.RegisterViewModel
 
@@ -18,8 +17,8 @@ class ViewModelFactory constructor(private val application: Application) : ViewM
                     isAssignableFrom(LoginViewModel::class.java) -> {
                         LoginViewModel(application)
                     }
-                    isAssignableFrom(MainViewModel::class.java) ->{
-                        MainViewModel(application)
+                    isAssignableFrom(HomeViewModel::class.java) ->{
+                        HomeViewModel(application)
                     }
                     else ->
                         throw IllegalArgumentException("Unknown ViewModel: ${modelClass.name}")

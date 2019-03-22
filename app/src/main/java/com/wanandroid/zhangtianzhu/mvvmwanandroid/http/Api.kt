@@ -1,9 +1,7 @@
 package com.wanandroid.zhangtianzhu.mvvmwanandroid.http
 
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface Api {
     /**
@@ -23,4 +21,12 @@ interface Api {
     fun getRegisterData(@Field("username") username: String,
                         @Field("password") password: String,
                         @Field("repassword") repassword: String): Call<HttpResult<LoginData>>
+
+    /**
+     * 获取文章列表
+     * http://www.wanandroid.com/article/list/0/json
+     * @param pageNum
+     */
+    @GET("article/list/{pageNum}/json")
+    fun getArticles(@Path("pageNum") pageNum: Int): Call<HttpResult<ArticleData>>
 }

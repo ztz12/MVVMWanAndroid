@@ -34,14 +34,14 @@ data class BannerData(
 //首页数据
 data class ArticleData(
         @Json(name = "curPage") val curPage:Int,
-        @Json(name = "datas") val datas:MutableList<ArticelDetail>,
+        @Json(name = "datas") val datas:MutableList<ArticleDetail>,
         @Json(name = "offset") val offset:Int,
         @Json(name = "over") val over:Boolean,
         @Json(name = "pageCount") val pageCount:Int,
         @Json(name = "size") val size:Int,
         @Json(name = "total") val total:Int
 )
-data class ArticelDetail(
+data class ArticleDetail(
      @Json(name = "apkLink") val apkLink:String,
      @Json(name = "author") val author:String,
      @Json(name = "chapterId") val chapterId:Int,
@@ -148,7 +148,7 @@ data class KnowledgeData(
 
 //导航
 data class NavigationData(
-        @Json(name = "articles") val articles : MutableList<ArticelDetail>,
+        @Json(name = "articles") val articles : MutableList<ArticleDetail>,
         @Json(name = "cid") val cid:Int,
         @Json(name = "name") val name:String
 )

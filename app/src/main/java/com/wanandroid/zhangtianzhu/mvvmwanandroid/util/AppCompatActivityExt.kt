@@ -21,7 +21,6 @@ private inline fun FragmentManager.transct(action: FragmentTransaction.() -> Uni
                 com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.fade_out,
                 com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.fade_in,
                 com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.shrink_fade_out_from_bottom
-
         )
         action()
     }.commitAllowingStateLoss()

@@ -17,7 +17,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.wechat.WechatFragm
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.StatusBarUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.replaceFragmentInActivity
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.MainViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import me.yokeyword.fragmentation.SupportActivity
@@ -98,7 +98,6 @@ class MainActivity : SupportActivity() {
                     R.id.tab_home_pager -> {
                         if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_HOME)){
                             HomeFragment.newInstance().also {
-                                obtainMainViewModel().changeFragmentPage(Constants.TYPE_HOME)
                                 replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_HOME)
                                 common_toolbar_title_tv.text = Constants.TYPE_HOME
                             }
@@ -108,7 +107,6 @@ class MainActivity : SupportActivity() {
                     R.id.tab_knowledge_hierarchy -> {
                         if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_KNOWLEDGE)){
                             KnowledgeFragment.newInstance().also {
-                                obtainMainViewModel().changeFragmentPage(Constants.TYPE_KNOWLEDGE)
                                 replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_KNOWLEDGE)
                                 common_toolbar_title_tv.text = Constants.TYPE_KNOWLEDGE
                             }
@@ -118,7 +116,6 @@ class MainActivity : SupportActivity() {
                     R.id.tab_weChat ->{
                         if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_WECHAT)){
                             WechatFragment.newInstance().also {
-                                obtainMainViewModel().changeFragmentPage(Constants.TYPE_WECHAT)
                                 replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_WECHAT)
                                 common_toolbar_title_tv.text = Constants.TYPE_WECHAT
                             }
@@ -128,7 +125,6 @@ class MainActivity : SupportActivity() {
                     R.id.tab_navigation -> {
                         if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_NAVIGATION)){
                             NavigationFragment.newInstance().also {
-                                obtainMainViewModel().changeFragmentPage(Constants.TYPE_NAVIGATION)
                                 replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_NAVIGATION)
                                 common_toolbar_title_tv.text = Constants.TYPE_NAVIGATION
                             }
@@ -138,7 +134,6 @@ class MainActivity : SupportActivity() {
                     else -> {
                         if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_PROJECT)){
                             ProjectFragment.newInstance().also {
-                                obtainMainViewModel().changeFragmentPage(Constants.TYPE_PROJECT)
                                 replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_PROJECT)
                                 common_toolbar_title_tv.text = Constants.TYPE_PROJECT
                             }
@@ -153,7 +148,6 @@ class MainActivity : SupportActivity() {
         navigation.menu.findItem(R.id.nav_item_my_collect).setOnMenuItemClickListener {
             if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_COLLECT)){
                 CollectFragment.newInstance().also {
-                    obtainMainViewModel().changeFragmentPage(Constants.TYPE_COLLECT)
                     replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_COLLECT)
                 }
             }
@@ -172,7 +166,6 @@ class MainActivity : SupportActivity() {
         navigation.menu.findItem(R.id.nav_item_home).setOnMenuItemClickListener {
             if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_HOME)){
                 HomeFragment.newInstance().also {
-                    obtainMainViewModel().changeFragmentPage(Constants.TYPE_HOME)
                     replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_HOME)
                 }
             }
@@ -207,5 +200,5 @@ class MainActivity : SupportActivity() {
         }
     }
 
-    private fun obtainMainViewModel():MainViewModel = initViewModel(MainViewModel::class.java)
+    fun obtainHomeModel():HomeViewModel = initViewModel(HomeViewModel::class.java)
 }
