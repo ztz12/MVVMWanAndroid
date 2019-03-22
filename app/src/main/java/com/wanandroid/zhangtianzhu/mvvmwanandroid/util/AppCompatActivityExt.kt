@@ -9,12 +9,12 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 
 fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment,@IdRes id:Int,tag:String) {
-    supportFragmentManager.transct {
+    supportFragmentManager.transact {
         replace(id,fragment,tag)
     }
 }
 
-private inline fun FragmentManager.transct(action: FragmentTransaction.() -> Unit) {
+private inline fun FragmentManager.transact(action: FragmentTransaction.() -> Unit) {
     beginTransaction().apply {
         setCustomAnimations(
                 com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.grow_fade_in_from_bottom,

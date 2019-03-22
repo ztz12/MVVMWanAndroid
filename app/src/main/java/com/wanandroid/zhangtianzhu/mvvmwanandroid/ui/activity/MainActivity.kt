@@ -24,6 +24,15 @@ import me.yokeyword.fragmentation.SupportActivity
 
 class MainActivity : SupportActivity() {
 
+    private var mType: String? = null
+
+    private var homeFragment: HomeFragment? = null
+    private var knowledgeFragment: KnowledgeFragment? = null
+    private var weChatFragment: WechatFragment? = null
+    private var navigationFragment: NavigationFragment? = null
+    private var projectFragment: ProjectFragment? = null
+    private var collectFragment: CollectFragment? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,6 +40,7 @@ class MainActivity : SupportActivity() {
     }
 
     private fun initData() {
+        mType = Constants.TYPE_HOME
         setSupportActionBar(common_toolbar)
         val actionBar = supportActionBar!!
         actionBar.setDisplayShowTitleEnabled(false)
@@ -40,19 +50,30 @@ class MainActivity : SupportActivity() {
         initDrawLayout()
         initNavigationItem()
         HomeFragment.newInstance().also {
-            replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_HOME)
+            homeFragment = it
+            replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_HOME)
             common_toolbar_title_tv.text = Constants.TYPE_HOME
         }
+        initFab()
     }
 
-    private fun initBottomNavigation(){
+    private fun initFragment() {
+        homeFragment = HomeFragment.newInstance()
+        knowledgeFragment = KnowledgeFragment.newInstance()
+        weChatFragment = WechatFragment.newInstance()
+        navigationFragment = NavigationFragment.newInstance()
+        projectFragment = ProjectFragment.newInstance()
+        collectFragment = CollectFragment.newInstance()
+    }
+
+    private fun initBottomNavigation() {
         bottom_navigation_view.run {
             labelVisibilityMode = 1
             setOnNavigationItemSelectedListener(onNavigationItemReselectedListener)
         }
     }
 
-    private fun initDrawLayout(){
+    private fun initDrawLayout() {
         val toggle = object : ActionBarDrawerToggle(
                 this, drawer_layout, common_toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             //侧栏滑动时
@@ -84,10 +105,19 @@ class MainActivity : SupportActivity() {
         drawer_layout.addDrawerListener(toggle)
     }
 
+    private fun initFab() {
+        fab.setOnClickListener {
+            when (mType) {
+                Constants.TYPE_HOME -> homeFragment?.scrollTop()
+            }
+
+        }
+    }
+
     override fun onBackPressedSupport() {
-        if(drawer_layout.isDrawerOpen(GravityCompat.START)){
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
-        }else{
+        } else {
             super.onBackPressedSupport()
         }
     }
@@ -96,45 +126,57 @@ class MainActivity : SupportActivity() {
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
                 return@OnNavigationItemSelectedListener when (item.itemId) {
                     R.id.tab_home_pager -> {
-                        if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_HOME)){
+                        mType = Constants.TYPE_HOME
+                        if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_HOME)) {
+                            //重新创建新的实例添加，否则recyclerView会报LinearLayoutManager被多次添加异常
                             HomeFragment.newInstance().also {
-                                replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_HOME)
+                                //重新赋值实例，获取最新的实例对象
+                                homeFragment = it
+                                replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_HOME)
                                 common_toolbar_title_tv.text = Constants.TYPE_HOME
                             }
                         }
                         true
                     }
                     R.id.tab_knowledge_hierarchy -> {
-                        if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_KNOWLEDGE)){
+                        mType = Constants.TYPE_KNOWLEDGE
+                        if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_KNOWLEDGE)) {
                             KnowledgeFragment.newInstance().also {
-                                replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_KNOWLEDGE)
+                                knowledgeFragment = it
+                                replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_KNOWLEDGE)
                                 common_toolbar_title_tv.text = Constants.TYPE_KNOWLEDGE
                             }
                         }
                         true
                     }
-                    R.id.tab_weChat ->{
-                        if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_WECHAT)){
+                    R.id.tab_weChat -> {
+                        mType = Constants.TYPE_WECHAT
+                        if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_WECHAT)) {
                             WechatFragment.newInstance().also {
-                                replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_WECHAT)
+                                weChatFragment = it
+                                replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_WECHAT)
                                 common_toolbar_title_tv.text = Constants.TYPE_WECHAT
                             }
                         }
                         true
                     }
                     R.id.tab_navigation -> {
-                        if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_NAVIGATION)){
+                        mType = Constants.TYPE_NAVIGATION
+                        if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_NAVIGATION)) {
                             NavigationFragment.newInstance().also {
-                                replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_NAVIGATION)
+                                navigationFragment = it
+                                replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_NAVIGATION)
                                 common_toolbar_title_tv.text = Constants.TYPE_NAVIGATION
                             }
                         }
                         true
                     }
                     else -> {
-                        if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_PROJECT)){
+                        mType = Constants.TYPE_PROJECT
+                        if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_PROJECT)) {
                             ProjectFragment.newInstance().also {
-                                replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_PROJECT)
+                                projectFragment = it
+                                replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_PROJECT)
                                 common_toolbar_title_tv.text = Constants.TYPE_PROJECT
                             }
                         }
@@ -144,11 +186,12 @@ class MainActivity : SupportActivity() {
 
             }
 
-    private fun initNavigationItem(){
+    private fun initNavigationItem() {
         navigation.menu.findItem(R.id.nav_item_my_collect).setOnMenuItemClickListener {
-            if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_COLLECT)){
+            if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_COLLECT)) {
                 CollectFragment.newInstance().also {
-                    replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_COLLECT)
+                    collectFragment = it
+                    replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_COLLECT)
                 }
             }
             fab.visibility = View.INVISIBLE
@@ -164,9 +207,11 @@ class MainActivity : SupportActivity() {
         }
 
         navigation.menu.findItem(R.id.nav_item_home).setOnMenuItemClickListener {
-            if(null == supportFragmentManager.findFragmentByTag(Constants.TYPE_HOME)){
+            mType = Constants.TYPE_HOME
+            if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_HOME)) {
                 HomeFragment.newInstance().also {
-                    replaceFragmentInActivity(it,R.id.fl_page,Constants.TYPE_HOME)
+                    homeFragment = it
+                    replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_HOME)
                 }
             }
             bottom_navigation_view.selectedItemId = R.id.tab_home_pager
@@ -190,15 +235,25 @@ class MainActivity : SupportActivity() {
         //退出登录
         navigation.menu.findItem(R.id.nav_item_logout).run {
             closeDrawer()
-                true
-            }
+            true
+        }
     }
 
-    private fun closeDrawer(){
-        if(drawer_layout.isDrawerOpen(GravityCompat.START)){
+    private fun closeDrawer() {
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         }
     }
 
-    fun obtainHomeModel():HomeViewModel = initViewModel(HomeViewModel::class.java)
+    fun obtainHomeModel(): HomeViewModel = initViewModel(HomeViewModel::class.java)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        homeFragment = null
+        knowledgeFragment = null
+        weChatFragment = null
+        navigationFragment = null
+        projectFragment = null
+        collectFragment = null
+    }
 }

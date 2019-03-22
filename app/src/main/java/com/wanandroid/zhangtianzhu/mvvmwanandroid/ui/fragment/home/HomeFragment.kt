@@ -21,6 +21,8 @@ class HomeFragment : BaseFragment() {
 
     private val mAdapter: HomeAdapter by lazy { HomeAdapter(_mActivity) }
 
+    private val linearManager:LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
+
     override fun initData() {
         binding = getDataBinding() as FragmentHomeBinding
         homeViewModel = (activity as MainActivity).obtainHomeModel()
@@ -29,7 +31,7 @@ class HomeFragment : BaseFragment() {
 
     private fun init() {
         home_rl.run {
-            layoutManager = LinearLayoutManager(_mActivity)
+            layoutManager = linearManager
             adapter = mAdapter
             itemAnimator = DefaultItemAnimator()
         }
@@ -37,6 +39,15 @@ class HomeFragment : BaseFragment() {
         homeViewModel.homeResult.observe(_mActivity, Observer { mAdapter.submitList(it) })
     }
 
+    fun scrollTop(){
+        binding.homeRl.run {
+            if(linearManager.findFirstVisibleItemPosition()>20){
+                scrollToPosition(0)
+            }else{
+                smoothScrollToPosition(0)
+            }
+        }
+    }
 
     companion object {
         fun newInstance() = HomeFragment()

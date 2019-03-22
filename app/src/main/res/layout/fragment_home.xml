@@ -15,6 +15,9 @@
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarSize="@dimen/dp_2"
+            android:scrollbarThumbVertical="@color/Blue"
             android:id="@+id/home_rl"></android.support.v7.widget.RecyclerView>
         <com.scwang.smartrefresh.header.TaurusHeader
             android:layout_width="match_parent"
