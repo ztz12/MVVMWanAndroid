@@ -6,12 +6,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.View
-import android.widget.TextView
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityMainBinding
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.login.LoginActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.home.CollectFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.home.HomeFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.knowledge.KnowledgeFragment
@@ -24,9 +20,9 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.replaceFragmentInActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
-import org.jetbrains.anko.startActivity
+import me.yokeyword.fragmentation.SupportActivity
 
-class MainActivity : BaseActivity() {
+class MainActivity : SupportActivity() {
 
     private var mType: String? = null
 
@@ -37,26 +33,19 @@ class MainActivity : BaseActivity() {
     private var projectFragment: ProjectFragment? = null
     private var collectFragment: CollectFragment? = null
 
-    private var tvUser: TextView? = null
-
-    private var binding: ActivityMainBinding? = null
-
-    override fun getLayoutId(): Int = R.layout.activity_main
-
-    override fun onViewSaveInstance(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        initData()
     }
 
-    override fun initData() {
-        binding = getDataBinding() as ActivityMainBinding
+    private fun initData() {
         mType = Constants.TYPE_HOME
         setSupportActionBar(common_toolbar)
         val actionBar = supportActionBar!!
         actionBar.setDisplayShowTitleEnabled(false)
         StatusBarUtil.setStatusColor(window, ContextCompat.getColor(this, R.color.main_status_bar_blue), 1.0f)
         common_toolbar.setNavigationOnClickListener { onBackPressedSupport() }
-        navigation.run {
-            tvUser = getHeaderView(0).findViewById(R.id.nav_header_login_tv)
-        }
         initBottomNavigation()
         initDrawLayout()
         initNavigationItem()
@@ -66,6 +55,15 @@ class MainActivity : BaseActivity() {
             common_toolbar_title_tv.text = Constants.TYPE_HOME
         }
         initFab()
+    }
+
+    private fun initFragment() {
+        homeFragment = HomeFragment.newInstance()
+        knowledgeFragment = KnowledgeFragment.newInstance()
+        weChatFragment = WechatFragment.newInstance()
+        navigationFragment = NavigationFragment.newInstance()
+        projectFragment = ProjectFragment.newInstance()
+        collectFragment = CollectFragment.newInstance()
     }
 
     private fun initBottomNavigation() {
@@ -189,18 +187,6 @@ class MainActivity : BaseActivity() {
             }
 
     private fun initNavigationItem() {
-        tvUser?.run {
-            text = if (!isLogin) {
-                getString(R.string.login_in)
-            } else {
-                user
-            }
-            setOnClickListener {
-                if (!isLogin) {
-                    startActivity<LoginActivity>()
-                }
-            }
-        }
         navigation.menu.findItem(R.id.nav_item_my_collect).setOnMenuItemClickListener {
             if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_COLLECT)) {
                 CollectFragment.newInstance().also {

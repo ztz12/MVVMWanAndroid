@@ -10,12 +10,9 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Preference
 import me.yokeyword.fragmentation.SupportFragment
 
 abstract class BaseFragment : SupportFragment() {
-
-    protected var isLogin by Preference(Constants.ISLOGIN, false)
 
     private var themeCount = 0
 

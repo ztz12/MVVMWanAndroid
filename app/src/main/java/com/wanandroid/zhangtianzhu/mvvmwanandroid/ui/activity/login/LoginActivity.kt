@@ -52,11 +52,7 @@ class LoginActivity : BaseActivity() {
                     startActivity<MainActivity>()
                     finish()
                     showSuccess = false
-                    isLogin = true
                 }
-            })
-            binding.viewmodel?.loginData?.observe(this, Observer { loginData->
-                user = loginData!!.username
             })
             binding.viewmodel?.showErrorMsg?.observe(this, Observer {
                 if (it!! && showMsg) {
