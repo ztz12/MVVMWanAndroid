@@ -37,16 +37,14 @@ class HomeFragment : BaseFragment() {
                 mDialog.dismiss()
             }
             mAdapter = HomeAdapter(_mActivity, bannerData!!) { binding.viewmodel?.retry() }
-            home_rl.run {
+            binding.homeRl.run {
                 layoutManager = linearManager
                 adapter = mAdapter
                 itemAnimator = DefaultItemAnimator()
             }
-
             homeViewModel.homeResult.observe(_mActivity, Observer { mAdapter.submitList(it) })
             refreshData()
         })
-
     }
 
     fun scrollTop() {
@@ -60,14 +58,14 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun refreshData() {
-        home_refresh.setOnRefreshListener {
+        binding.homeRefresh.setOnRefreshListener {
             homeViewModel.refresh()
             setRefreshThemeColor(home_refresh)
-            home_refresh.finishRefresh(1000)
+            binding.homeRefresh.finishRefresh(1000)
         }
-        home_refresh.setOnLoadMoreListener {
+        binding.homeRefresh.setOnLoadMoreListener {
             homeViewModel.refresh()
-            home_refresh.finishLoadMore(1000)
+            binding.homeRefresh.finishLoadMore(1000)
         }
     }
 
