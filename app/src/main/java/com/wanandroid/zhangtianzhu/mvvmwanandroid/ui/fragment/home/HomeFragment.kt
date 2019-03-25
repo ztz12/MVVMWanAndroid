@@ -19,7 +19,7 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
 
-    private val mAdapter: HomeAdapter by lazy { HomeAdapter(_mActivity) }
+    private lateinit var mAdapter: HomeAdapter
 
     private val linearManager:LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
 
@@ -30,6 +30,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun init() {
+        mAdapter = HomeAdapter(_mActivity){binding.viewmodel?.retry()}
         home_rl.run {
             layoutManager = linearManager
             adapter = mAdapter
@@ -37,6 +38,7 @@ class HomeFragment : BaseFragment() {
         }
 
         homeViewModel.homeResult.observe(_mActivity, Observer { mAdapter.submitList(it) })
+        refreshData()
     }
 
     fun scrollTop(){
@@ -46,6 +48,18 @@ class HomeFragment : BaseFragment() {
             }else{
                 smoothScrollToPosition(0)
             }
+        }
+    }
+
+    private fun refreshData(){
+        home_refresh.setOnRefreshListener{
+            homeViewModel.refresh()
+            setRefreshThemeColor(home_refresh)
+            home_refresh.finishRefresh(1000)
+        }
+        home_refresh.setOnLoadMoreListener {
+            homeViewModel.refresh()
+            home_refresh.finishLoadMore(1000)
         }
     }
 

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.home.ContentActivity
 
-class HomeAdapter constructor(private val context: Context) : PagedListAdapter<ArticleDetail, HomeViewHolder>(itemCallback) {
+class HomeAdapter constructor(private val context: Context,private val retryCallback:()->Unit) : PagedListAdapter<ArticleDetail, HomeViewHolder>(itemCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): HomeViewHolder = HomeViewHolder(parent, context)
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
@@ -27,6 +27,7 @@ class HomeAdapter constructor(private val context: Context) : PagedListAdapter<A
     }
 
     private val onClickListener = View.OnClickListener {
+        retryCallback()
         val articleDetail = it.tag as ArticleDetail
         val position = currentList?.indexOf(articleDetail)
         val list = currentList?.toList()

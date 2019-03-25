@@ -6,4 +6,12 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.home.HomeDateRepository
 
 class HomeViewModel constructor(application: Application):AndroidViewModel(application) {
     val homeResult = HomeDateRepository.getInstance().getHomeData()
+
+    fun retry(){
+        HomeDateRepository.getInstance().getListing()
+    }
+
+    fun refresh(){
+        HomeDateRepository.getInstance().getListing()
+    }
 }

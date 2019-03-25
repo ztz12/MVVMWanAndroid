@@ -11,11 +11,24 @@ import retrofit2.Response
 
 //PageKeyedDataSource页面在加载时插入一个上/下一个键，如从网络获取数据，会将nextPage加载到后续的加载中
 class HomeDataSource : PageKeyedDataSource<Int, ArticleDetail>() {
+
+    private var retry:(()->Any)?=null
+
+    fun retryAllFailed(){
+        val prevRetry = retry
+        retry = null
+        prevRetry?.also {
+            it.invoke()
+        }
+    }
     //该方法是接收初始第一页加载的数据，初始化PageList并对加载页计数
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, ArticleDetail>) {
         RetrofitService.service.getArticles(0)
                 .enqueue(object : Callback<HttpResult<ArticleData>> {
                     override fun onFailure(call: Call<HttpResult<ArticleData>>, t: Throwable) {
+                        retry = {
+                            loadInitial(params, callback)
+                        }
                     }
 
                     override fun onResponse(call: Call<HttpResult<ArticleData>>, response: Response<HttpResult<ArticleData>>) {
@@ -35,13 +48,21 @@ class HomeDataSource : PageKeyedDataSource<Int, ArticleDetail>() {
                 .enqueue(object : Callback<HttpResult<ArticleData>> {
                     override fun onResponse(call: Call<HttpResult<ArticleData>>, response: Response<HttpResult<ArticleData>>) {
                         if (response.isSuccessful) {
+                            retry = null
                             callback.onResult(
                                     response.body()?.data?.datas ?: emptyList(), params.key + 1
                             )
+                        }else{
+                            retry = {
+                                loadAfter(params, callback)
+                            }
                         }
                     }
 
                     override fun onFailure(call: Call<HttpResult<ArticleData>>, t: Throwable) {
+                        retry = {
+                            loadAfter(params, callback)
+                        }
                     }
 
                 })

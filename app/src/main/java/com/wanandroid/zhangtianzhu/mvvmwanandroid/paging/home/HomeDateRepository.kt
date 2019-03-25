@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.Listing
 
 class HomeDateRepository {
     companion object {
@@ -27,5 +28,17 @@ class HomeDateRepository {
                 .setInitialLoadSizeHint(PAGE_SIZE * 2)
                 .build()
         return LivePagedListBuilder(sourceFactory, config).build()
+    }
+
+    fun getListing():Listing<ArticleDetail>{
+        val sourceFactory = HomeDataSourceFactory()
+        return Listing(
+                retry = {
+                    sourceFactory.sourceLiveData.value?.retryAllFailed()
+                },
+                refresh = {
+                    sourceFactory.sourceLiveData.value?.invalidate()
+                }
+        )
     }
 }
