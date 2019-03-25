@@ -21,7 +21,7 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var mAdapter: HomeAdapter
 
-    private val linearManager:LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
+    private val linearManager: LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
 
     override fun initData() {
         binding = getDataBinding() as FragmentHomeBinding
@@ -30,29 +30,37 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun init() {
-        mAdapter = HomeAdapter(_mActivity){binding.viewmodel?.retry()}
-        home_rl.run {
-            layoutManager = linearManager
-            adapter = mAdapter
-            itemAnimator = DefaultItemAnimator()
-        }
+        mDialog.show()
+        homeViewModel.getBannerData()
+        homeViewModel.bannerData.observe(_mActivity, Observer { bannerData ->
+            if(mDialog.isShowing){
+                mDialog.dismiss()
+            }
+            mAdapter = HomeAdapter(_mActivity, bannerData!!) { binding.viewmodel?.retry() }
+            home_rl.run {
+                layoutManager = linearManager
+                adapter = mAdapter
+                itemAnimator = DefaultItemAnimator()
+            }
 
-        homeViewModel.homeResult.observe(_mActivity, Observer { mAdapter.submitList(it) })
-        refreshData()
+            homeViewModel.homeResult.observe(_mActivity, Observer { mAdapter.submitList(it) })
+            refreshData()
+        })
+
     }
 
-    fun scrollTop(){
+    fun scrollTop() {
         binding.homeRl.run {
-            if(linearManager.findFirstVisibleItemPosition()>20){
+            if (linearManager.findFirstVisibleItemPosition() > 20) {
                 scrollToPosition(0)
-            }else{
+            } else {
                 smoothScrollToPosition(0)
             }
         }
     }
 
-    private fun refreshData(){
-        home_refresh.setOnRefreshListener{
+    private fun refreshData() {
+        home_refresh.setOnRefreshListener {
             homeViewModel.refresh()
             setRefreshThemeColor(home_refresh)
             home_refresh.finishRefresh(1000)
@@ -66,4 +74,5 @@ class HomeFragment : BaseFragment() {
     companion object {
         fun newInstance() = HomeFragment()
     }
+
 }

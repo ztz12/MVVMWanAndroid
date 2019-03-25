@@ -17,6 +17,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.BannerData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.StatusBarUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.getAgent
 import kotlinx.android.synthetic.main.agent_container.*
@@ -41,38 +42,48 @@ class ContentActivity : BaseActivity() {
             setSupportActionBar(toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
-        StatusBarUtil.setStatusColor(window, ContextCompat.getColor(this,R.color.main_status_bar_blue),1.0f)
-        toolbar.setNavigationOnClickListener{onBackPressedSupport()}
+        StatusBarUtil.setStatusColor(window, ContextCompat.getColor(this, R.color.main_status_bar_blue), 1.0f)
+        toolbar.setNavigationOnClickListener { onBackPressedSupport() }
         intent.extras.let {
-            shareTitle = it.getString(Constants.CONTENT_TITLE_KEY,"")
-            shareUrl = it.getString(Constants.CONTENT_URL_KEY,"")
-            shareId = it.getInt(Constants.CONTENT_ID_KEY,0)
+            shareTitle = it.getString(Constants.CONTENT_TITLE_KEY, "")
+            shareUrl = it.getString(Constants.CONTENT_URL_KEY, "")
+            shareId = it.getInt(Constants.CONTENT_ID_KEY, 0)
         }
-        agentWeb = shareUrl.getAgent(this,fl_agent,
-                LinearLayout.LayoutParams(-1,-1)
-                ,webChromeClient,webClient)
+        agentWeb = shareUrl.getAgent(this, fl_agent,
+                LinearLayout.LayoutParams(-1, -1)
+                , webChromeClient, webClient)
     }
 
     companion object {
-        fun startContentActivity(context:Context,articleDetail:List<ArticleDetail>,position:Int){
+        fun startContentActivity(context: Context, articleDetail: List<ArticleDetail>, position: Int) {
             Intent(context, ContentActivity::class.java).run {
-                putExtra(Constants.CONTENT_ID_KEY,articleDetail[position].id)
-                putExtra(Constants.CONTENT_URL_KEY,articleDetail[position].link)
-                putExtra(Constants.CONTENT_TITLE_KEY,articleDetail[position].title)
+                putExtra(Constants.CONTENT_ID_KEY, articleDetail[position].id)
+                putExtra(Constants.CONTENT_URL_KEY, articleDetail[position].link)
+                putExtra(Constants.CONTENT_TITLE_KEY, articleDetail[position].title)
+                context.startActivity(this)
+            }
+        }
+
+        fun startContentBannerActivity(context: Context, bannerData: List<BannerData>, position: Int) {
+            Intent(context, ContentActivity::class.java).run {
+                putExtra(Constants.CONTENT_ID_KEY, bannerData[position].id)
+                putExtra(Constants.CONTENT_URL_KEY, bannerData[position].url)
+                putExtra(Constants.CONTENT_TITLE_KEY, bannerData[position].title)
                 context.startActivity(this)
             }
         }
     }
 
 
-    private val webClient = object :WebViewClient(){
+    private val webClient = object : WebViewClient() {
 
     }
 
-    private val webChromeClient = object :WebChromeClient(){
+    private val webChromeClient = object : WebChromeClient() {
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
 
         }
+
         override fun onReceivedTitle(view: WebView?, title: String?) {
             super.onReceivedTitle(view, title)
             title?.let {
@@ -82,9 +93,9 @@ class ContentActivity : BaseActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        return if(agentWeb?.handleKeyEvent(keyCode,event)!!){
+        return if (agentWeb?.handleKeyEvent(keyCode, event)!!) {
             true
-        }else {
+        } else {
             finish()
             super.onKeyDown(keyCode, event)
         }
@@ -92,23 +103,23 @@ class ContentActivity : BaseActivity() {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_content,menu)
+        menuInflater.inflate(R.menu.menu_content, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
+        when (item?.itemId) {
             R.id.action_share -> Intent().run {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT,
                         getString(
                                 R.string.share_type_url,
                                 getString(R.string.app_name),
-                        shareTitle,shareUrl))
+                                shareTitle, shareUrl))
                 type = Constants.CONTENT_SHARE_TYPE
-                startActivity(Intent.createChooser(this,getString(R.string.share)))
+                startActivity(Intent.createChooser(this, getString(R.string.share)))
             }
-            R.id.action_browser ->{
+            R.id.action_browser -> {
                 Intent().run {
                     action = Intent.ACTION_VIEW
                     data = Uri.parse(shareUrl)
@@ -118,6 +129,7 @@ class ContentActivity : BaseActivity() {
         }
         return true
     }
+
     /**
      * 跟随Activity生命周期，释放CPU更省电
      */

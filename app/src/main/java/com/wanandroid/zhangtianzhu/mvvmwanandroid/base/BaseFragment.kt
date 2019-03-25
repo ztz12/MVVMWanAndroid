@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
 import me.yokeyword.fragmentation.SupportFragment
 
 abstract class BaseFragment : SupportFragment() {
@@ -17,6 +18,8 @@ abstract class BaseFragment : SupportFragment() {
 
     private lateinit var viewDataBinding: ViewDataBinding
 
+    protected val mDialog by lazy { DialogUtil.getWaitDialog(_mActivity, getString(R.string.loading)) }
+
     override fun onLazyInitView(savedInstanceState: Bundle?) {
         super.onLazyInitView(savedInstanceState)
         init()
@@ -24,10 +27,11 @@ abstract class BaseFragment : SupportFragment() {
 
     //通过DataBindingUtil.inflate加载布局，并返回加载当前binding的根布局,解决将Fragment添加到MainActivity中整体替换主页布局问题
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewDataBinding = DataBindingUtil.inflate(inflater,getLayoutId(),container,false)
+        viewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         return viewDataBinding.root
     }
-    private fun init(){
+
+    private fun init() {
         getDataBinding()
         initData()
     }

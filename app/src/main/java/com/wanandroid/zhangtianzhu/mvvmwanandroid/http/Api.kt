@@ -29,4 +29,10 @@ interface Api {
      */
     @GET("article/list/{pageNum}/json")
     fun getArticles(@Path("pageNum") pageNum: Int): Call<HttpResult<ArticleData>>
+
+    /**
+     * 获取轮播图
+     */
+    @GET("banner/json")
+    fun getBannerData(): Call<HttpResult<List<BannerData>>>
 }

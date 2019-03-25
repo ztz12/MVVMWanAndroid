@@ -3,21 +3,52 @@ package com.wanandroid.zhangtianzhu.mvvmwanandroid.adapter.home
 import android.arch.paging.PagedListAdapter
 import android.content.Context
 import android.support.v7.util.DiffUtil
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.BannerData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.home.ContentActivity
 
-class HomeAdapter constructor(private val context: Context,private val retryCallback:()->Unit) : PagedListAdapter<ArticleDetail, HomeViewHolder>(itemCallback) {
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): HomeViewHolder = HomeViewHolder(parent, context)
+class HomeAdapter constructor(private val context: Context, private val bannerData: List<BannerData>, private val retryCallback: () -> Unit) : PagedListAdapter<ArticleDetail, RecyclerView.ViewHolder>(itemCallback) {
 
-    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        holder.bindArticle(getItem(position))
-        holder.itemView.tag = getItem(position)
-        holder.itemView.setOnClickListener(onClickListener)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            HOME_DATA -> {
+                HomeViewHolder(parent, context)
+            }
+            else -> {
+                BannerViewHolder(parent, context)
+            }
+        }
     }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is HomeViewHolder -> {
+                holder.bindArticle(getItem(position))
+                holder.itemView.tag = getItem(position)
+                holder.itemView.setOnClickListener(onClickListener)
+            }
+            is BannerViewHolder -> {
+                holder.bindBannerData(bannerData)
+            }
+
+        }
+
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (position) {
+            0 -> HOME_HEAD
+            else -> HOME_DATA
+        }
+    }
+
+
     companion object {
+        const val HOME_HEAD = 0
+        const val HOME_DATA = 1
         private val itemCallback = object : DiffUtil.ItemCallback<ArticleDetail>() {
             override fun areItemsTheSame(p0: ArticleDetail, p1: ArticleDetail): Boolean = p0.id == p1.id
 
@@ -31,8 +62,8 @@ class HomeAdapter constructor(private val context: Context,private val retryCall
         val articleDetail = it.tag as ArticleDetail
         val position = currentList?.indexOf(articleDetail)
         val list = currentList?.toList()
-        if(position!=null&&list!=null){
-            ContentActivity.startContentActivity(it.context,list,position)
+        if (position != null && list != null) {
+            ContentActivity.startContentActivity(it.context, list, position)
         }
     }
 }
