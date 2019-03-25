@@ -53,11 +53,11 @@ class ContentActivity : BaseActivity() {
     }
 
     companion object {
-        fun startContentActivity(context:Context,articleDetail:List<ArticleDetail>){
+        fun startContentActivity(context:Context,articleDetail:List<ArticleDetail>,position:Int){
             Intent(context, ContentActivity::class.java).run {
-                putExtra(Constants.CONTENT_ID_KEY,articleDetail[0].id)
-                putExtra(Constants.CONTENT_URL_KEY,articleDetail[0].link)
-                putExtra(Constants.CONTENT_TITLE_KEY,articleDetail[0].title)
+                putExtra(Constants.CONTENT_ID_KEY,articleDetail[position].id)
+                putExtra(Constants.CONTENT_URL_KEY,articleDetail[position].link)
+                putExtra(Constants.CONTENT_TITLE_KEY,articleDetail[position].title)
                 context.startActivity(this)
             }
         }

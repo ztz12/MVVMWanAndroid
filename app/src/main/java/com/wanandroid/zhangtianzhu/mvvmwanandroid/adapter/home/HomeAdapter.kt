@@ -31,7 +31,7 @@ class HomeAdapter constructor(private val context: Context) : PagedListAdapter<A
         val position = currentList?.indexOf(articleDetail)
         val list = currentList?.toList()
         if(position!=null&&list!=null){
-            ContentActivity.startContentActivity(it.context,list)
+            ContentActivity.startContentActivity(it.context,list,position)
         }
     }
 }
