@@ -2,6 +2,7 @@ package com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.home
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
@@ -106,6 +107,13 @@ class ContentActivity : BaseActivity() {
                         shareTitle,shareUrl))
                 type = Constants.CONTENT_SHARE_TYPE
                 startActivity(Intent.createChooser(this,getString(R.string.share)))
+            }
+            R.id.action_browser ->{
+                Intent().run {
+                    action = Intent.ACTION_VIEW
+                    data = Uri.parse(shareUrl)
+                    startActivity(this)
+                }
             }
         }
         return true
