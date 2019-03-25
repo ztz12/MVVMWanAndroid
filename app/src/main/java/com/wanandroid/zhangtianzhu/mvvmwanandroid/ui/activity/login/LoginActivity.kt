@@ -22,7 +22,7 @@ class LoginActivity : BaseActivity() {
 
     override fun initData() {
         binding = getDataBinding() as ActivityLoginBinding
-        viewModel =  obtainViewModel()
+        viewModel = obtainViewModel()
         binding.viewmodel = viewModel
         binding.onClickListener = onClickListener
     }
@@ -31,7 +31,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private val onClickListener = View.OnClickListener {
-        when(it.id){
+        when (it.id) {
             R.id.login_toolbar ->
                 finish()
             R.id.login_btn ->
@@ -41,10 +41,10 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun login(){
+    private fun login() {
         var showSuccess = true
         var showMsg = true
-        if(validate()){
+        if (validate()) {
             binding.viewmodel?.start(login_account_edit.text.toString(),
                     login_password_edit.text.toString())
             binding.viewmodel?.success?.observe(this, Observer {
@@ -52,7 +52,11 @@ class LoginActivity : BaseActivity() {
                     startActivity<MainActivity>()
                     finish()
                     showSuccess = false
+                    isLogin = true
                 }
+            })
+            binding.viewmodel?.loginData?.observe(this, Observer { loginData ->
+                user = loginData!!.username
             })
             binding.viewmodel?.showErrorMsg?.observe(this, Observer {
                 if (it!! && showMsg) {
@@ -82,5 +86,5 @@ class LoginActivity : BaseActivity() {
 
     }
 
-   private fun obtainViewModel():LoginViewModel = initViewModel(LoginViewModel::class.java)
+    private fun obtainViewModel(): LoginViewModel = initViewModel(LoginViewModel::class.java)
 }

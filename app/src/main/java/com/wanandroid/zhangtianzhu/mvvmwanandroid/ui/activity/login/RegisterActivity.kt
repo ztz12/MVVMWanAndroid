@@ -58,7 +58,11 @@ class RegisterActivity : BaseActivity() {
                     startActivity<MainActivity>()
                     finish()
                     showSuccess = false
+                    isLogin = true
                 }
+            })
+            binding.viewmodel?.loginData?.observe(this, Observer { loginData ->
+                user = loginData!!.username
             })
             //TODO LiveData setValue中方法设置了避免重复发送数据通知观察者
             binding.viewmodel?.showErrorMsg?.observe(this, Observer {

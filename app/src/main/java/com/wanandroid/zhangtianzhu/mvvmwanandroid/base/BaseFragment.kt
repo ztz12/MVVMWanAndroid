@@ -10,6 +10,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Preference
 import me.yokeyword.fragmentation.SupportFragment
 
 abstract class BaseFragment : SupportFragment() {
@@ -17,6 +18,8 @@ abstract class BaseFragment : SupportFragment() {
     private var themeCount = 0
 
     private lateinit var viewDataBinding: ViewDataBinding
+
+    protected var isLogin by Preference(Constants.ISLOGIN, false)
 
     protected val mDialog by lazy { DialogUtil.getWaitDialog(_mActivity, getString(R.string.loading)) }
 
