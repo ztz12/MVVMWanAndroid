@@ -49,7 +49,7 @@ class MainActivity : BaseActivity() {
 
     private var binding: ActivityMainBinding? = null
 
-    private lateinit var mViewModel :MainViewModel
+    private lateinit var mViewModel: MainViewModel
 
     private val mDialog by lazy { DialogUtil.getWaitDialog(this, getString(R.string.loginOut_ing)) }
 
@@ -217,7 +217,7 @@ class MainActivity : BaseActivity() {
         }
         navigation.menu.findItem(R.id.nav_item_my_collect).setOnMenuItemClickListener {
             mType = Constants.TYPE_COLLECT
-            if(isLogin) {
+            if (isLogin) {
                 if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_COLLECT)) {
                     CollectFragment.newInstance().also {
                         collectFragment = it
@@ -227,8 +227,8 @@ class MainActivity : BaseActivity() {
                 bottom_navigation_view.visibility = View.INVISIBLE
                 common_toolbar_title_tv.text = Constants.TYPE_COLLECT
                 closeDrawer()
-            }else{
-                DialogUtil.showSnackBar(this,getString(R.string.login_tint))
+            } else {
+                DialogUtil.showSnackBar(this, getString(R.string.login_tint))
             }
             true
         }
@@ -273,7 +273,7 @@ class MainActivity : BaseActivity() {
                     mDialog.show()
                     mViewModel.loginOut()
                     mViewModel.loginOutSuccess.observe(this@MainActivity, Observer {
-                        if(it!!){
+                        if (it!!) {
                             doAsync {
                                 Preference.clearPreference()
                                 uiThread {
@@ -293,12 +293,13 @@ class MainActivity : BaseActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onisLogin(loginEvent: LoginEvent){
-        if(loginEvent.isLogin){
+    fun onisLogin(loginEvent: LoginEvent) {
+        if (loginEvent.isLogin) {
+            isLogin = true
             tvUser?.text = user
             navigation.menu.findItem(R.id.nav_item_logout).isVisible = true
             drawer_layout.closeDrawers()
-        }else{
+        } else {
             tvUser?.text = getString(R.string.login_in)
             navigation.menu.findItem(R.id.nav_item_logout).isVisible = false
         }
@@ -310,7 +311,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun obtainMainModel():MainViewModel = initViewModel(MainViewModel::class.java)
+    private fun obtainMainModel(): MainViewModel = initViewModel(MainViewModel::class.java)
     fun obtainHomeModel(): HomeViewModel = initViewModel(HomeViewModel::class.java)
     fun obtainCollectModel(): CollectViewModel = initViewModel(CollectViewModel::class.java)
 

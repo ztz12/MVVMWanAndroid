@@ -10,21 +10,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel(application: Application):AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _loginOutSuccess = MutableLiveData<Boolean>()
 
-    val loginOutSuccess:LiveData<Boolean>
-            get() = _loginOutSuccess
+    val loginOutSuccess: LiveData<Boolean>
+        get() = _loginOutSuccess
 
-    fun loginOut(){
+    fun loginOut() {
         RetrofitService.service.logout()
-                .enqueue(object :Callback<HttpResult<Any>>{
+                .enqueue(object : Callback<HttpResult<Any>> {
                     override fun onFailure(call: Call<HttpResult<Any>>, t: Throwable) {
                         _loginOutSuccess.value = false
                     }
 
                     override fun onResponse(call: Call<HttpResult<Any>>, response: Response<HttpResult<Any>>) {
-                        if(response.isSuccessful){
+                        if (response.isSuccessful) {
                             val result = response.body()
                             _loginOutSuccess.value = result?.errorCode == 0
                         }
