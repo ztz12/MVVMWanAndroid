@@ -51,4 +51,23 @@ interface Api {
      */
     @POST("lg/uncollect_originId/{id}/json")
     fun cancelCollectArticle(@Path("id") id: Int): Call<HttpResult<Any>>
+
+    /**
+     *  获取收藏列表
+     *  http://www.wanandroid.com/lg/collect/list/0/json
+     *  @param page
+     */
+    @GET("lg/collect/list/{page}/json")
+    fun getCollectList(@Path("page") page: Int): Call<HttpResult<CollectionResponseBody>>
+
+    /**
+     * 我的收藏列表中取消收藏文章
+     * http://www.wanandroid.com/lg/uncollect/2805/json
+     * @param id
+     * @param originId
+     */
+    @POST("lg/uncollect/{id}/json")
+    @FormUrlEncoded
+    fun removeCollectArticle(@Path("id") id: Int,
+                             @Field("originId") originId: Int = -1): Call<HttpResult<Any>>
 }

@@ -1,12 +1,14 @@
 package com.wanandroid.zhangtianzhu.mvvmwanandroid.adapter.home
 
 import android.content.Context
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import cn.bingoogolapple.bgabanner.BGABanner
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.BannerData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.home.ContentActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.ImageLoader
@@ -47,7 +49,12 @@ class BannerViewHolder constructor(parent: ViewGroup, private val context: Conte
 
     private val delegate = BGABanner.Delegate<ImageView, String> { banner, itemView, model, position ->
         if (bannerData.isNotEmpty()) {
-            ContentActivity.startContentBannerActivity(context, bannerData, position)
+            Intent(context, ContentActivity::class.java).run {
+                putExtra(Constants.CONTENT_ID_KEY, bannerData[position].id)
+                putExtra(Constants.CONTENT_URL_KEY, bannerData[position].url)
+                putExtra(Constants.CONTENT_TITLE_KEY, bannerData[position].title)
+                context.startActivity(this)
+            }
         }
     }
 }

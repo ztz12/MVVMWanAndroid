@@ -18,9 +18,11 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.knowledge.Knowledg
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.navigation.NavigationFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.project.ProjectFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.wechat.WechatFragment
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.StatusBarUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.replaceFragmentInActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.collect.CollectViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
@@ -111,6 +113,7 @@ class MainActivity : BaseActivity() {
         fab.setOnClickListener {
             when (mType) {
                 Constants.TYPE_HOME -> homeFragment?.scrollTop()
+                Constants.TYPE_COLLECT -> collectFragment?.scrollTop()
             }
 
         }
@@ -202,15 +205,20 @@ class MainActivity : BaseActivity() {
             }
         }
         navigation.menu.findItem(R.id.nav_item_my_collect).setOnMenuItemClickListener {
-            if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_COLLECT)) {
-                CollectFragment.newInstance().also {
-                    collectFragment = it
-                    replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_COLLECT)
+            mType = Constants.TYPE_COLLECT
+            if(isLogin) {
+                if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_COLLECT)) {
+                    CollectFragment.newInstance().also {
+                        collectFragment = it
+                        replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_COLLECT)
+                    }
                 }
+                bottom_navigation_view.visibility = View.INVISIBLE
+                common_toolbar_title_tv.text = Constants.TYPE_COLLECT
+                closeDrawer()
+            }else{
+                DialogUtil.showSnackBar(this,getString(R.string.login_tint))
             }
-            bottom_navigation_view.visibility = View.INVISIBLE
-            common_toolbar_title_tv.text = Constants.TYPE_COLLECT
-            closeDrawer()
             true
         }
 
@@ -259,6 +267,7 @@ class MainActivity : BaseActivity() {
     }
 
     fun obtainHomeModel(): HomeViewModel = initViewModel(HomeViewModel::class.java)
+    fun obtainCollectModel(): CollectViewModel = initViewModel(CollectViewModel::class.java)
 
     override fun onDestroy() {
         super.onDestroy()

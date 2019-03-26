@@ -2,10 +2,12 @@ package com.wanandroid.zhangtianzhu.mvvmwanandroid.adapter.home
 
 import android.arch.paging.PagedListAdapter
 import android.content.Context
+import android.content.Intent
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.BannerData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.home.ContentActivity
@@ -71,7 +73,12 @@ class HomeAdapter constructor(private val context: Context, private val bannerDa
         val position = currentList?.indexOf(articleDetail)
         val list = currentList?.toList()
         if (position != null && list != null) {
-            ContentActivity.startContentActivity(it.context, list, position)
+            Intent(context, ContentActivity::class.java).run {
+                putExtra(Constants.CONTENT_ID_KEY, list[position].id)
+                putExtra(Constants.CONTENT_URL_KEY, list[position].link)
+                putExtra(Constants.CONTENT_TITLE_KEY, list[position].title)
+                context.startActivity(this)
+            }
         }
     }
 

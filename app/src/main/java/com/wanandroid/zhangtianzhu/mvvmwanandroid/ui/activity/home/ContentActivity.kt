@@ -54,27 +54,6 @@ class ContentActivity : BaseActivity() {
                 , webChromeClient, webClient)
     }
 
-    companion object {
-        fun startContentActivity(context: Context, articleDetail: List<ArticleDetail>, position: Int) {
-            Intent(context, ContentActivity::class.java).run {
-                putExtra(Constants.CONTENT_ID_KEY, articleDetail[position].id)
-                putExtra(Constants.CONTENT_URL_KEY, articleDetail[position].link)
-                putExtra(Constants.CONTENT_TITLE_KEY, articleDetail[position].title)
-                context.startActivity(this)
-            }
-        }
-
-        fun startContentBannerActivity(context: Context, bannerData: List<BannerData>, position: Int) {
-            Intent(context, ContentActivity::class.java).run {
-                putExtra(Constants.CONTENT_ID_KEY, bannerData[position].id)
-                putExtra(Constants.CONTENT_URL_KEY, bannerData[position].url)
-                putExtra(Constants.CONTENT_TITLE_KEY, bannerData[position].title)
-                context.startActivity(this)
-            }
-        }
-    }
-
-
     private val webClient = object : WebViewClient() {
 
     }

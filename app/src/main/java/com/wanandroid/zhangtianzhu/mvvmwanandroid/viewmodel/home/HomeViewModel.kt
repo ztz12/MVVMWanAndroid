@@ -7,13 +7,13 @@ import android.arch.lifecycle.MutableLiveData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.BannerData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.HttpResult
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.RetrofitService
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.home.HomeDateRepository
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.home.HomeDataRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class HomeViewModel constructor(application: Application) : AndroidViewModel(application) {
-    val homeResult = HomeDateRepository.getInstance().getHomeData()
+    val homeResult = HomeDataRepository.getInstance().getHomeData()
     private val _bannerData = MutableLiveData<List<BannerData>>()
     val bannerData: LiveData<List<BannerData>>
         get() = _bannerData
@@ -26,11 +26,11 @@ class HomeViewModel constructor(application: Application) : AndroidViewModel(app
         get() = _cancelCollectSuccess
 
     fun retry() {
-        HomeDateRepository.getInstance().getListing()
+        HomeDataRepository.getInstance().getListing()
     }
 
     fun refresh() {
-        HomeDateRepository.getInstance().getListing()
+        HomeDataRepository.getInstance().getListing()
     }
 
     fun getBannerData() {

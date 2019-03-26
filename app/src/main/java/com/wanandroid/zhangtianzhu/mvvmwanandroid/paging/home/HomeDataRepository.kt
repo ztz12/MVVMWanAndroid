@@ -6,15 +6,15 @@ import android.arch.paging.PagedList
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.Listing
 
-class HomeDateRepository {
+class HomeDataRepository {
     companion object {
         private const val PAGE_SIZE = 15
         private const val ENABLE_PLACEHOLDERS = false
 
-        private var INSTANCE: HomeDateRepository? = null
+        private var INSTANCE: HomeDataRepository? = null
 
-        fun getInstance(): HomeDateRepository {
-            return INSTANCE ?: HomeDateRepository().apply {
+        fun getInstance(): HomeDataRepository {
+            return INSTANCE ?: HomeDataRepository().apply {
                 INSTANCE = this
             }
         }
@@ -30,7 +30,7 @@ class HomeDateRepository {
         return LivePagedListBuilder(sourceFactory, config).build()
     }
 
-    fun getListing():Listing<ArticleDetail>{
+    fun getListing(): Listing<ArticleDetail> {
         val sourceFactory = HomeDataSourceFactory()
         return Listing(
                 retry = {

@@ -55,7 +55,7 @@ class HomeFragment : BaseFragment() {
                             DialogUtil.showSnackBar(_mActivity, getString(R.string.http_error))
                             return
                         }
-                        var collect = articleDetail.collect
+                        val collect = articleDetail.collect
                         articleDetail.collect = !collect
                         mAdapter.notifyDataSetChanged()
                         if (collect) {
