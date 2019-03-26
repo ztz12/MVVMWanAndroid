@@ -59,10 +59,10 @@ class HomeFragment : BaseFragment() {
                         articleDetail.collect = !collect
                         mAdapter.notifyDataSetChanged()
                         if (collect) {
-                            homeViewModel.collect(articleDetail.id)
+                            homeViewModel.cancelCollect(articleDetail.id)
                             DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
                         } else {
-                            homeViewModel.cancelCollect(articleDetail.id)
+                            homeViewModel.collect(articleDetail.id)
                             DialogUtil.showSnackBar(_mActivity, getString(R.string.collect_success))
                         }
                     } else {
