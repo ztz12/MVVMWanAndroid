@@ -12,7 +12,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.ImageLoader
 
-class HomeViewHolder(parent: ViewGroup,private val context: Context) : RecyclerView.ViewHolder(
+class HomeViewHolder(parent: ViewGroup, private val context: Context) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_home_layout, parent, false)
 ) {
     private val homeTop = itemView.findViewById<TextView>(R.id.tv_home_top)
@@ -25,48 +25,48 @@ class HomeViewHolder(parent: ViewGroup,private val context: Context) : RecyclerV
     private val homeChapterName = itemView.findViewById<TextView>(R.id.tv_home_chapterName)
     private val collect = itemView.findViewById<ImageView>(R.id.iv_collect)
 
-    fun bindArticle(articleDetail: ArticleDetail?){
-        articleDetail?:return
+    fun bindArticle(articleDetail: ArticleDetail?, holder: HomeViewHolder) {
+        articleDetail ?: return
         homeArticle.text = Html.fromHtml(articleDetail.title)
         author.text = articleDetail.author
         homeDate.text = articleDetail.niceDate
-        if(articleDetail.collect){
+        if (articleDetail.collect) {
             collect.setImageResource(R.drawable.icon_like)
-        }else{
+        } else {
             collect.setImageResource(R.drawable.icon_like_article_not_selected)
         }
-        if(articleDetail.envelopePic.isNotEmpty()){
+        if (articleDetail.envelopePic.isNotEmpty()) {
             homePic.visibility = View.VISIBLE
             context.let {
-                ImageLoader.load(it,homePic,articleDetail.envelopePic)
+                ImageLoader.load(it, homePic, articleDetail.envelopePic)
             }
-        }else{
+        } else {
             homePic.visibility = View.GONE
         }
 
-        if(articleDetail.top =="1"){
+        if (articleDetail.top == "1") {
             homeTop.visibility = View.VISIBLE
-        }else{
+        } else {
             homeTop.visibility = View.GONE
         }
 
         //显示"新"
-        if(articleDetail.fresh){
+        if (articleDetail.fresh) {
             homeNewText.visibility = View.VISIBLE
-        }else{
+        } else {
             homeNewText.visibility = View.GONE
         }
 
         //标签
-        if(articleDetail.tags.size>0){
+        if (articleDetail.tags.size > 0) {
             articleTag.visibility = View.VISIBLE
             articleTag.text = articleDetail.tags[0].name
-        }else{
+        } else {
             articleTag.visibility = View.GONE
         }
 
         //项目分级
-        val chapterName = when{
+        val chapterName = when {
             articleDetail.superChapterName.isNotEmpty() and articleDetail.chapterName.isNotEmpty() ->
                 "${articleDetail.superChapterName}/${articleDetail.chapterName}"
             articleDetail.superChapterName.isNotEmpty() -> "${articleDetail.superChapterName}"
@@ -75,6 +75,22 @@ class HomeViewHolder(parent: ViewGroup,private val context: Context) : RecyclerV
         }
         homeChapterName.text = chapterName
 
+        holder.collect.setOnClickListener {
+            if (onItemCollectListener != null) {
+                onItemCollectListener?.onCollectListener(articleDetail)
+            }
+        }
+
+    }
+
+    private var onItemCollectListener: OnItemCollectListener? = null
+
+    fun setOnCollectListener(onItemCollectListener: OnItemCollectListener) {
+        this.onItemCollectListener = onItemCollectListener
+    }
+
+    interface OnItemCollectListener {
+        fun onCollectListener(articleDetail: ArticleDetail)
     }
 
 

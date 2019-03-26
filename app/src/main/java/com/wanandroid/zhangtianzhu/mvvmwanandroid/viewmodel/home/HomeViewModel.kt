@@ -18,6 +18,13 @@ class HomeViewModel constructor(application: Application) : AndroidViewModel(app
     val bannerData: LiveData<List<BannerData>>
         get() = _bannerData
 
+    private val _collectSuccess = MutableLiveData<Boolean>()
+    val collectSuccess: LiveData<Boolean>
+        get() = _collectSuccess
+    private val _cancelCollectSuccess = MutableLiveData<Boolean>()
+    val cancelCollectSuccess: LiveData<Boolean>
+        get() = _cancelCollectSuccess
+
     fun retry() {
         HomeDateRepository.getInstance().getListing()
     }
@@ -40,6 +47,38 @@ class HomeViewModel constructor(application: Application) : AndroidViewModel(app
                     }
                 }
             }
+        })
+    }
+
+    fun collect(id: Int) {
+        RetrofitService.service.addCollectArticle(id).enqueue(object : Callback<HttpResult<Any>> {
+            override fun onFailure(call: Call<HttpResult<Any>>, t: Throwable) {
+                _collectSuccess.value = false
+            }
+
+            override fun onResponse(call: Call<HttpResult<Any>>, response: Response<HttpResult<Any>>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    _collectSuccess.value = result!!.errorCode == 0
+                }
+            }
+
+        })
+    }
+
+    fun cancelCollect(id: Int) {
+        RetrofitService.service.cancelCollectArticle(id).enqueue(object : Callback<HttpResult<Any>> {
+            override fun onFailure(call: Call<HttpResult<Any>>, t: Throwable) {
+                _cancelCollectSuccess.value = false
+            }
+
+            override fun onResponse(call: Call<HttpResult<Any>>, response: Response<HttpResult<Any>>) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    _cancelCollectSuccess.value = result!!.errorCode == 0
+                }
+            }
+
         })
     }
 }

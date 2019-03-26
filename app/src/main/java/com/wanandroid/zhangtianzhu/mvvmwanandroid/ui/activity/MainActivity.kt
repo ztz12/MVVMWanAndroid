@@ -208,7 +208,6 @@ class MainActivity : BaseActivity() {
                     replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_COLLECT)
                 }
             }
-            fab.visibility = View.INVISIBLE
             bottom_navigation_view.visibility = View.INVISIBLE
             common_toolbar_title_tv.text = Constants.TYPE_COLLECT
             closeDrawer()

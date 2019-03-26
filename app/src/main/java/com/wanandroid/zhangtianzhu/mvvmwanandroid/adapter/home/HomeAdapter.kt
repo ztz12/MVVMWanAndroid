@@ -26,9 +26,17 @@ class HomeAdapter constructor(private val context: Context, private val bannerDa
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HomeViewHolder -> {
-                holder.bindArticle(getItem(position))
-                holder.itemView.tag = getItem(position)
+                holder.bindArticle(getItem(position - 1), holder)
+                holder.itemView.tag = getItem(position - 1)
                 holder.itemView.setOnClickListener(onClickListener)
+                holder.setOnCollectListener(object : HomeViewHolder.OnItemCollectListener {
+                    override fun onCollectListener(articleDetail: ArticleDetail) {
+                        if (onHomeCollectListener != null) {
+                            onHomeCollectListener?.homeCollectListener(articleDetail)
+                        }
+                    }
+
+                })
             }
             is BannerViewHolder -> {
                 holder.bindBannerData(bannerData)
@@ -65,5 +73,15 @@ class HomeAdapter constructor(private val context: Context, private val bannerDa
         if (position != null && list != null) {
             ContentActivity.startContentActivity(it.context, list, position)
         }
+    }
+
+    private var onHomeCollectListener: OnHomeCollectListener? = null
+
+    fun setOnHomeCollectListener(onHomeCollectListener: OnHomeCollectListener) {
+        this.onHomeCollectListener = onHomeCollectListener
+    }
+
+    interface OnHomeCollectListener {
+        fun homeCollectListener(articleDetail: ArticleDetail)
     }
 }

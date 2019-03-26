@@ -5,9 +5,13 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.adapter.home.HomeAdapter
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.app.WanAndroidApplication
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.FragmentHomeBinding
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.NetWorkUtils
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.MainActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -33,7 +37,7 @@ class HomeFragment : BaseFragment() {
         mDialog.show()
         homeViewModel.getBannerData()
         homeViewModel.bannerData.observe(_mActivity, Observer { bannerData ->
-            if(mDialog.isShowing){
+            if (mDialog.isShowing) {
                 mDialog.dismiss()
             }
             mAdapter = HomeAdapter(_mActivity, bannerData!!) { binding.viewmodel?.retry() }
@@ -44,6 +48,28 @@ class HomeFragment : BaseFragment() {
             }
             homeViewModel.homeResult.observe(_mActivity, Observer { mAdapter.submitList(it) })
             refreshData()
+            mAdapter.setOnHomeCollectListener(object : HomeAdapter.OnHomeCollectListener {
+                override fun homeCollectListener(articleDetail: ArticleDetail) {
+                    if (isLogin) {
+                        if (!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)) {
+                            DialogUtil.showSnackBar(_mActivity, getString(R.string.http_error))
+                            return
+                        }
+                        var collect = articleDetail.collect
+                        articleDetail.collect = !collect
+                        mAdapter.notifyDataSetChanged()
+                        if (collect) {
+                            homeViewModel.collect(articleDetail.id)
+                            DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
+                        } else {
+                            homeViewModel.cancelCollect(articleDetail.id)
+                            DialogUtil.showSnackBar(_mActivity, getString(R.string.collect_success))
+                        }
+                    } else {
+                        DialogUtil.showSnackBar(_mActivity, getString(R.string.login_tint))
+                    }
+                }
+            })
         })
     }
 
