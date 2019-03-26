@@ -3,9 +3,12 @@ package com.wanandroid.zhangtianzhu.mvvmwanandroid.base
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.bean.event.LoginEvent
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Preference
 import me.yokeyword.fragmentation.SupportActivity
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 abstract class BaseActivity : SupportActivity() {
     private lateinit var viewDataBinding: ViewDataBinding
@@ -20,6 +23,7 @@ abstract class BaseActivity : SupportActivity() {
     }
 
     private fun init(savedInstanceState: Bundle?) {
+        EventBus.getDefault().register(this)
         viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         getDataBinding()
         initData()
@@ -33,4 +37,14 @@ abstract class BaseActivity : SupportActivity() {
     abstract fun onViewSaveInstance(savedInstanceState: Bundle?)
 
     protected fun getDataBinding(): ViewDataBinding = viewDataBinding
+
+    @Subscribe
+    fun onEvent(loginEvent: LoginEvent){
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
 }

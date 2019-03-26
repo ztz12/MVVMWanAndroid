@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.View
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.bean.event.LoginEvent
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityRegisterBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.MainActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.SnackUtils
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.RegisterViewModel
 import kotlinx.android.synthetic.main.activity_register.*
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.startActivity
 
 class RegisterActivity : BaseActivity() {
@@ -63,6 +65,7 @@ class RegisterActivity : BaseActivity() {
             })
             binding.viewmodel?.loginData?.observe(this, Observer { loginData ->
                 user = loginData!!.username
+                EventBus.getDefault().post(LoginEvent(true))
             })
             //TODO LiveData setValue中方法设置了避免重复发送数据通知观察者
             binding.viewmodel?.showErrorMsg?.observe(this, Observer {

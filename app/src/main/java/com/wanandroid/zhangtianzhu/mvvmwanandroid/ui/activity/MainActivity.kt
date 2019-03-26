@@ -1,5 +1,7 @@
 package com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity
 
+import android.arch.lifecycle.Observer
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.content.ContextCompat
@@ -9,6 +11,7 @@ import android.view.View
 import android.widget.TextView
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.bean.event.LoginEvent
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityMainBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.login.LoginActivity
@@ -18,15 +21,18 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.knowledge.Knowledg
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.navigation.NavigationFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.project.ProjectFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.wechat.WechatFragment
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.StatusBarUtil
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.replaceFragmentInActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.*
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.collect.CollectViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.uiThread
 
 class MainActivity : BaseActivity() {
 
@@ -43,6 +49,10 @@ class MainActivity : BaseActivity() {
 
     private var binding: ActivityMainBinding? = null
 
+    private lateinit var mViewModel :MainViewModel
+
+    private val mDialog by lazy { DialogUtil.getWaitDialog(this, getString(R.string.loginOut_ing)) }
+
     override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun onViewSaveInstance(savedInstanceState: Bundle?) {
@@ -50,6 +60,7 @@ class MainActivity : BaseActivity() {
 
     override fun initData() {
         binding = getDataBinding() as ActivityMainBinding
+        mViewModel = obtainMainModel()
         mType = Constants.TYPE_HOME
         setSupportActionBar(common_toolbar)
         val actionBar = supportActionBar!!
@@ -255,8 +266,41 @@ class MainActivity : BaseActivity() {
 
         //退出登录
         navigation.menu.findItem(R.id.nav_item_logout).run {
-            closeDrawer()
-            true
+            isVisible = isLogin
+            setOnMenuItemClickListener {
+                DialogUtil.getConfirmDialog(this@MainActivity, getString(R.string.logout_tint)
+                        , DialogInterface.OnClickListener { _, _ ->
+                    mDialog.show()
+                    mViewModel.loginOut()
+                    mViewModel.loginOutSuccess.observe(this@MainActivity, Observer {
+                        if(it!!){
+                            doAsync {
+                                Preference.clearPreference()
+                                uiThread {
+                                    mDialog.dismiss()
+                                    isLogin = false
+                                    startActivity<LoginActivity>()
+                                    EventBus.getDefault().post(LoginEvent(false))
+                                }
+                            }
+                        }
+                    })
+                    closeDrawer()
+                }).show()
+                true
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onisLogin(loginEvent: LoginEvent){
+        if(loginEvent.isLogin){
+            tvUser?.text = user
+            navigation.menu.findItem(R.id.nav_item_logout).isVisible = true
+            drawer_layout.closeDrawers()
+        }else{
+            tvUser?.text = getString(R.string.login_in)
+            navigation.menu.findItem(R.id.nav_item_logout).isVisible = false
         }
     }
 
@@ -266,6 +310,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun obtainMainModel():MainViewModel = initViewModel(MainViewModel::class.java)
     fun obtainHomeModel(): HomeViewModel = initViewModel(HomeViewModel::class.java)
     fun obtainCollectModel(): CollectViewModel = initViewModel(CollectViewModel::class.java)
 

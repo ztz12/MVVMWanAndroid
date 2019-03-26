@@ -70,4 +70,11 @@ interface Api {
     @FormUrlEncoded
     fun removeCollectArticle(@Path("id") id: Int,
                              @Field("originId") originId: Int = -1): Call<HttpResult<Any>>
+
+    /**
+     * 退出登录
+     * http://www.wanandroid.com/user/logout/json
+     */
+    @GET("user/logout/json")
+    fun logout(): Call<HttpResult<Any>>
 }

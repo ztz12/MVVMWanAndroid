@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.View
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.bean.event.LoginEvent
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityLoginBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.MainActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.SnackUtils
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.startActivity
 
 class LoginActivity : BaseActivity() {
@@ -52,11 +54,11 @@ class LoginActivity : BaseActivity() {
                     startActivity<MainActivity>()
                     finish()
                     showSuccess = false
-                    isLogin = true
                 }
             })
             binding.viewmodel?.loginData?.observe(this, Observer { loginData ->
                 user = loginData!!.username
+                EventBus.getDefault().post(LoginEvent(true))
             })
             binding.viewmodel?.showErrorMsg?.observe(this, Observer {
                 if (it!! && showMsg) {
