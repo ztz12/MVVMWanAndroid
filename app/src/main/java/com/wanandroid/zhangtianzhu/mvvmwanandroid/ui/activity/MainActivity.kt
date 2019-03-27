@@ -20,12 +20,13 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.home.HomeFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.knowledge.KnowledgeFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.navigation.NavigationFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.project.ProjectFragment
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.wechat.WechatFragment
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.wechat.WeChatFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.*
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.collect.CollectViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.MainViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.wechat.WeChatViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import org.greenrobot.eventbus.EventBus
@@ -41,7 +42,7 @@ class MainActivity : BaseActivity() {
 
     private var homeFragment: HomeFragment? = null
     private var knowledgeFragment: KnowledgeFragment? = null
-    private var weChatFragment: WechatFragment? = null
+    private var weChatFragment: WeChatFragment? = null
     private var navigationFragment: NavigationFragment? = null
     private var projectFragment: ProjectFragment? = null
     private var collectFragment: CollectFragment? = null
@@ -126,6 +127,7 @@ class MainActivity : BaseActivity() {
             when (mType) {
                 Constants.TYPE_HOME -> homeFragment?.scrollTop()
                 Constants.TYPE_KNOWLEDGE -> knowledgeFragment?.scrollTop()
+                Constants.TYPE_WECHAT -> weChatFragment?.scrollTop()
                 Constants.TYPE_COLLECT -> collectFragment?.scrollTop()
             }
 
@@ -170,7 +172,7 @@ class MainActivity : BaseActivity() {
                     R.id.tab_weChat -> {
                         mType = Constants.TYPE_WECHAT
                         if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_WECHAT)) {
-                            WechatFragment.newInstance().also {
+                            WeChatFragment.newInstance().also {
                                 weChatFragment = it
                                 replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_WECHAT)
                                 common_toolbar_title_tv.text = Constants.TYPE_WECHAT
@@ -317,6 +319,7 @@ class MainActivity : BaseActivity() {
     fun obtainHomeModel(): HomeViewModel = initViewModel(HomeViewModel::class.java)
     fun obtainCollectModel(): CollectViewModel = initViewModel(CollectViewModel::class.java)
     fun obtainKnowledgeModel() :KnowledgeViewModel = initViewModel(KnowledgeViewModel::class.java)
+    fun obtainWeChatModel() :WeChatViewModel = initViewModel(WeChatViewModel::class.java)
 
     override fun onDestroy() {
         super.onDestroy()

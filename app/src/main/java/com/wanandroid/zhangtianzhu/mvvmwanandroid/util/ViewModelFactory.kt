@@ -10,6 +10,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeD
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.LoginViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.RegisterViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.wechat.WeChatViewModel
 
 class ViewModelFactory constructor(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
@@ -35,6 +36,8 @@ class ViewModelFactory constructor(private val application: Application) : ViewM
                     }
                     isAssignableFrom(KnowledgeDetailViewModel::class.java) ->
                         KnowledgeDetailViewModel(application)
+                    isAssignableFrom(WeChatViewModel::class.java) ->
+                        WeChatViewModel(application)
                     else ->
                         throw IllegalArgumentException("Unknown ViewModel: ${modelClass.name}")
                 }

@@ -90,4 +90,10 @@ interface Api {
     @GET("article/list/{pageNum}/json")
     fun getKnowledgeList(@Path("pageNum") pageNum: Int,
                          @Query("cid") cid: Int): Call<HttpResult<ArticleData>>
+
+    /**
+     * 微信列表
+     */
+    @GET("wxarticle/chapters/json")
+    fun getWeChatData(): Call<HttpResult<MutableList<WeChatData>>>
 }
