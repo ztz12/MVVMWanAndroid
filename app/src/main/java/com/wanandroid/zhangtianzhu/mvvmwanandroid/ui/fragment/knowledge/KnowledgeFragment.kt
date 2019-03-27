@@ -11,12 +11,12 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.MainActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeViewModel
 import kotlinx.android.synthetic.main.fragment_knowledge.*
 
-class KnowledgeFragment:BaseFragment() {
-    private lateinit var binding:FragmentKnowledgeBinding
+class KnowledgeFragment : BaseFragment() {
+    private lateinit var binding: FragmentKnowledgeBinding
 
     private lateinit var mViewHolder: KnowledgeViewModel
 
-    private val linearManager by lazy{LinearLayoutManager(_mActivity)}
+    private val linearManager by lazy { LinearLayoutManager(_mActivity) }
 
     private lateinit var mAdapter: KnowledgeAdapter
 
@@ -28,8 +28,8 @@ class KnowledgeFragment:BaseFragment() {
         init()
     }
 
-    private fun init(){
-        mAdapter = KnowledgeAdapter(_mActivity){mViewHolder.retry()}
+    private fun init() {
+        mAdapter = KnowledgeAdapter(_mActivity) { mViewHolder.retry() }
         binding.rlKnowledge.run {
             layoutManager = linearManager
             adapter = mAdapter
