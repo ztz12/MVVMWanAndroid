@@ -25,6 +25,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.*
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.collect.CollectViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.MainViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
 import org.greenrobot.eventbus.EventBus
@@ -124,6 +125,7 @@ class MainActivity : BaseActivity() {
         fab.setOnClickListener {
             when (mType) {
                 Constants.TYPE_HOME -> homeFragment?.scrollTop()
+                Constants.TYPE_KNOWLEDGE -> knowledgeFragment?.scrollTop()
                 Constants.TYPE_COLLECT -> collectFragment?.scrollTop()
             }
 
@@ -314,6 +316,7 @@ class MainActivity : BaseActivity() {
     private fun obtainMainModel(): MainViewModel = initViewModel(MainViewModel::class.java)
     fun obtainHomeModel(): HomeViewModel = initViewModel(HomeViewModel::class.java)
     fun obtainCollectModel(): CollectViewModel = initViewModel(CollectViewModel::class.java)
+    fun obtainKnowledgeModel() :KnowledgeViewModel = initViewModel(KnowledgeViewModel::class.java)
 
     override fun onDestroy() {
         super.onDestroy()

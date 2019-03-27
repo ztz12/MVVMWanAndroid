@@ -68,6 +68,10 @@ object Constants {
 
     const val TYPE_COLLECT = "收藏"
 
+    const val PAGE_SIZE = 15
+
+    const val ENABLE_PLACEHOLDERS = false
+
     /**
      * url key
      */

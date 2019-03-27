@@ -1,37 +1,35 @@
-package com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.home
+package com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.knowledge
 
 import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseDataRepository
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.KnowledgeTreeData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.Listing
 
-class HomeDataRepository : BaseDataRepository<ArticleDetail>() {
+class KnowledgeDataRepository : BaseDataRepository<KnowledgeTreeData>() {
     companion object {
-
-        private var INSTANCE: HomeDataRepository? = null
-
-        fun getInstance(): HomeDataRepository {
-            return INSTANCE ?: HomeDataRepository().apply {
+        private var INSTANCE: KnowledgeDataRepository? = null
+        fun getInstance(): KnowledgeDataRepository {
+            return INSTANCE ?: KnowledgeDataRepository().apply {
                 INSTANCE = this
             }
         }
     }
 
-    override fun getDataRepository(): LiveData<PagedList<ArticleDetail>> {
-        val sourceFactory = HomeDataSourceFactory()
+    override fun getDataRepository(): LiveData<PagedList<KnowledgeTreeData>> {
+        val sourceFactory = KnowledgeDataSourceFactory()
         val config = PagedList.Config.Builder()
                 .setPageSize(Constants.PAGE_SIZE)
-                .setEnablePlaceholders(Constants.ENABLE_PLACEHOLDERS)//是否设置占位符，由于网络数量不固定，设置false，数量固定设置true
                 .setInitialLoadSizeHint(Constants.PAGE_SIZE * 2)
+                .setEnablePlaceholders(Constants.ENABLE_PLACEHOLDERS)
                 .build()
         return LivePagedListBuilder(sourceFactory, config).build()
     }
 
-    override fun getListingRepository(): Listing<ArticleDetail> {
-        val sourceFactory = HomeDataSourceFactory()
+    override fun getListingRepository(): Listing<KnowledgeTreeData> {
+        val sourceFactory = KnowledgeDataSourceFactory()
         return Listing(
                 retry = {
                     sourceFactory.sourceLiveData.value?.retryAllFailed()

@@ -12,17 +12,17 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class CollectViewModel constructor(application: Application) : AndroidViewModel(application) {
-    val collectViewModel = CollectDataRepository.getInstance().getCollectData()
+    val collectViewModel = CollectDataRepository.getInstance().getDataRepository()
     private val _removeSuccess = MutableLiveData<Boolean>()
     val removeSuccess: LiveData<Boolean>
         get() = _removeSuccess
 
     fun retry() {
-        CollectDataRepository.getInstance().getCollectListing()
+        CollectDataRepository.getInstance().getListingRepository()
     }
 
     fun refresh() {
-        CollectDataRepository.getInstance().getCollectListing()
+        CollectDataRepository.getInstance().getListingRepository()
     }
 
     fun removeCollectItem(id: Int, originId: Int) {

@@ -13,7 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeViewModel constructor(application: Application) : AndroidViewModel(application) {
-    val homeResult = HomeDataRepository.getInstance().getHomeData()
+    val homeResult = HomeDataRepository.getInstance().getDataRepository()
     private val _bannerData = MutableLiveData<List<BannerData>>()
     val bannerData: LiveData<List<BannerData>>
         get() = _bannerData
@@ -26,11 +26,11 @@ class HomeViewModel constructor(application: Application) : AndroidViewModel(app
         get() = _cancelCollectSuccess
 
     fun retry() {
-        HomeDataRepository.getInstance().getListing()
+        HomeDataRepository.getInstance().getListingRepository()
     }
 
     fun refresh() {
-        HomeDataRepository.getInstance().getListing()
+        HomeDataRepository.getInstance().getListingRepository()
     }
 
     fun getBannerData() {

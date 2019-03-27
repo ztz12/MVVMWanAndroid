@@ -77,4 +77,17 @@ interface Api {
      */
     @GET("user/logout/json")
     fun logout(): Call<HttpResult<Any>>
+
+    /**
+     * 知识体系
+     */
+    @GET("tree/json")
+    fun getKnowledgeTree(): Call<HttpResult<List<KnowledgeTreeData>>>
+
+    /**
+     * 知识体系下的文章
+     */
+    @GET("article/list/{pageNum}/json")
+    fun getKnowledgeList(@Path("pageNum") pageNum: Int,
+                         @Query("cid") cid: Int): Call<HttpResult<ArticleData>>
 }

@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProvider
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.collect.CollectViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.MainViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.LoginViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.RegisterViewModel
 
@@ -27,6 +28,9 @@ class ViewModelFactory constructor(private val application: Application) : ViewM
                     }
                     isAssignableFrom(MainViewModel::class.java) ->{
                         MainViewModel(application)
+                    }
+                    isAssignableFrom(KnowledgeViewModel::class.java) ->{
+                        KnowledgeViewModel(application)
                     }
                     else ->
                         throw IllegalArgumentException("Unknown ViewModel: ${modelClass.name}")
