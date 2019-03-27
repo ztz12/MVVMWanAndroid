@@ -14,7 +14,6 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.NetWorkUtils
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.knowledge.KnowledgeListActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeDetailViewModel
 
 class KnowledgeDetailFragment : BaseFragment() {
@@ -34,7 +33,7 @@ class KnowledgeDetailFragment : BaseFragment() {
     override fun initData() {
         binding = getDataBinding() as FragmentKnowledgeDetailBinding
         cid = arguments?.getInt(Constants.CONTENT_CID_KEY) ?: 0
-        mViewModel = obtainDetailModel()
+        mViewModel = (_mActivity as KnowledgeListActivity).obtainDetailModel()
         mViewModel.changeCid(cid)
         init()
     }
@@ -106,6 +105,4 @@ class KnowledgeDetailFragment : BaseFragment() {
             return fragment
         }
     }
-
-    private fun obtainDetailModel() = (activity as KnowledgeListActivity).initViewModel(KnowledgeDetailViewModel::class.java)
 }

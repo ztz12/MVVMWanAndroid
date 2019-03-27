@@ -15,8 +15,9 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityKnowledgeL
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.KnowledgeData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.KnowledgeTreeData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.knowledge.KnowledgeDetailFragment
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.StatusBarUtil
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeDetailViewModel
 import kotlinx.android.synthetic.main.activity_knowledge_list.*
 
 class KnowledgeListActivity : BaseActivity() {
@@ -27,17 +28,17 @@ class KnowledgeListActivity : BaseActivity() {
 
     private var toolbarTitle: String? = ""
 
-    private val mAdapter:KnowledgePageAdapter by lazy { KnowledgePageAdapter(knowledgeData,supportFragmentManager) }
+    private val mAdapter: KnowledgePageAdapter by lazy { KnowledgePageAdapter(knowledgeData, supportFragmentManager) }
 
     override fun getLayoutId(): Int = R.layout.activity_knowledge_list
 
     override fun initData() {
         binding = getDataBinding() as ActivityKnowledgeListBinding
         intent?.extras.let {
-            toolbarTitle = it?.getString(Constants.CONTENT_TITLE_KEY,"")
+            toolbarTitle = it?.getString(Constants.CONTENT_TITLE_KEY, "")
             it?.getSerializable(Constants.CONTENT_DATA_KEY)?.let {
                 val data = it as KnowledgeTreeData
-                data.children.let {child ->
+                data.children.let { child ->
                     knowledgeData.addAll(child)
                 }
             }
@@ -45,7 +46,7 @@ class KnowledgeListActivity : BaseActivity() {
         init()
     }
 
-    private fun init(){
+    private fun init() {
         binding.toolbar.run {
             title = toolbarTitle
             setSupportActionBar(toolbar)
@@ -68,7 +69,7 @@ class KnowledgeListActivity : BaseActivity() {
     }
 
     private val fabOnClickListener = View.OnClickListener {
-        if(mAdapter.count==0){
+        if (mAdapter.count == 0) {
             return@OnClickListener
         }
 
@@ -76,7 +77,7 @@ class KnowledgeListActivity : BaseActivity() {
         fragment.scrollTop()
     }
 
-    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener{
+    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
         override fun onTabReselected(p0: TabLayout.Tab?) {
 
         }
@@ -86,7 +87,9 @@ class KnowledgeListActivity : BaseActivity() {
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
             p0.let {
-                vp_knowledge.setCurrentItem(it!!.position,false)
+                vp_knowledge.setCurrentItem(it!!.position, false)
+                //liveData监听数据改变，切换界面，重新切换上一个界面，数据显示刚才界面数据，无法更新，重新拿到对应的cid进行刷新当前adapter
+                obtainDetailModel().changeCid(knowledgeData[it.position].id)
             }
         }
 
@@ -116,6 +119,8 @@ class KnowledgeListActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    fun obtainDetailModel() = initViewModel(KnowledgeDetailViewModel::class.java)
 
     override fun onViewSaveInstance(savedInstanceState: Bundle?) {
     }
