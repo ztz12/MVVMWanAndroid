@@ -25,6 +25,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.*
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.collect.CollectViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.MainViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeDetailViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.wechat.WeChatViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -320,6 +321,7 @@ class MainActivity : BaseActivity() {
     fun obtainCollectModel(): CollectViewModel = initViewModel(CollectViewModel::class.java)
     fun obtainKnowledgeModel() :KnowledgeViewModel = initViewModel(KnowledgeViewModel::class.java)
     fun obtainWeChatModel() :WeChatViewModel = initViewModel(WeChatViewModel::class.java)
+    fun obtainDetailModel() = initViewModel(KnowledgeDetailViewModel::class.java)
 
     override fun onDestroy() {
         super.onDestroy()

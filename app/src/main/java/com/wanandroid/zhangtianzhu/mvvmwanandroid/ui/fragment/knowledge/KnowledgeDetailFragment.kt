@@ -12,6 +12,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.FragmentKnowledgeDetailBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.NetWorkUtils
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.MainActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.knowledge.KnowledgeListActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeDetailViewModel
@@ -33,7 +34,11 @@ class KnowledgeDetailFragment : BaseFragment() {
     override fun initData() {
         binding = getDataBinding() as FragmentKnowledgeDetailBinding
         cid = arguments?.getInt(Constants.CONTENT_CID_KEY) ?: 0
-        mViewModel = (_mActivity as KnowledgeListActivity).obtainDetailModel()
+        if(_mActivity is KnowledgeListActivity) {
+            mViewModel = (_mActivity as KnowledgeListActivity).obtainDetailModel()
+        }else if(_mActivity is MainActivity){
+            mViewModel = (_mActivity as MainActivity).obtainDetailModel()
+        }
         mViewModel.changeCid(cid)
         init()
     }

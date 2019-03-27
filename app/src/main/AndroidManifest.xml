@@ -18,7 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.knowledge.KnowledgeListActivity"></activity>
+        <activity android:name=".ui.activity.knowledge.KnowledgeListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="design_width_in_dp"

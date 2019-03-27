@@ -8,20 +8,18 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.FragmentWechatBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.WeChatData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.MainActivity
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.knowledge.KnowledgeListActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.knowledge.KnowledgeDetailFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.wechat.WeChatViewModel
 import kotlinx.android.synthetic.main.fragment_wechat.*
-import kotlinx.android.synthetic.main.fragment_wechat.view.*
 
 class WeChatFragment : BaseFragment() {
     private lateinit var binding: FragmentWechatBinding
 
-    private lateinit var mAdapter: WeChatAdapter
+    private var mData = mutableListOf<WeChatData>()
+
+    private val mAdapter: WeChatAdapter by lazy { WeChatAdapter(mData,childFragmentManager) }
 
     private lateinit var mViewModel: WeChatViewModel
-
-    private var mData = mutableListOf<WeChatData>()
 
     override fun initData() {
         binding = getDataBinding() as FragmentWechatBinding
@@ -37,16 +35,15 @@ class WeChatFragment : BaseFragment() {
                 mDialog.dismiss()
             }
             mData = it!!
-            mAdapter = WeChatAdapter(it, childFragmentManager)
             binding.vpWeChat.run {
                 adapter = mAdapter
-                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(weChat_tabLayout))
+                addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.weChatTabLayout))
                 offscreenPageLimit = it.size
             }
 
             binding.weChatTabLayout.run {
-                setupWithViewPager(vp_weChat)
-                addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(vp_weChat))
+                setupWithViewPager(binding.vpWeChat)
+                addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(binding.vpWeChat))
                 addOnTabSelectedListener(onTabSelectedListener)
             }
         })
@@ -58,8 +55,8 @@ class WeChatFragment : BaseFragment() {
 
         override fun onTabSelected(p0: TabLayout.Tab?) {
             p0?.let {
-                vp_weChat.setCurrentItem(p0.position, false)
-                (_mActivity as KnowledgeListActivity).obtainDetailModel().changeCid(mData[p0.position].id)
+                binding.vpWeChat.setCurrentItem(p0.position, false)
+                (_mActivity as MainActivity).obtainDetailModel().changeCid(mData[p0.position].id)
             }
         }
 
