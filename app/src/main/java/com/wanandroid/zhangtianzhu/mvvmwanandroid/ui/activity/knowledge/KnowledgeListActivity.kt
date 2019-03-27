@@ -15,6 +15,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityKnowledgeL
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.KnowledgeData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.KnowledgeTreeData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.knowledge.KnowledgeDetailFragment
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_knowledge_list.*
 
@@ -63,7 +64,7 @@ class KnowledgeListActivity : BaseActivity() {
             addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(vp_knowledge))
             addOnTabSelectedListener(onTabSelectedListener)
         }
-        fab_knowledge.setOnClickListener(fabOnClickListener)
+        binding.fabKnowledge.setOnClickListener(fabOnClickListener)
     }
 
     private val fabOnClickListener = View.OnClickListener {
