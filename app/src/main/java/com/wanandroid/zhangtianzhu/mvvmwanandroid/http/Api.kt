@@ -96,4 +96,10 @@ interface Api {
      */
     @GET("wxarticle/chapters/json")
     fun getWeChatData(): Call<HttpResult<MutableList<WeChatData>>>
+
+    /**
+     * 导航
+     */
+    @GET("navi/json")
+    fun getNavigationData(): Call<HttpResult<MutableList<NavigationData>>>
 }

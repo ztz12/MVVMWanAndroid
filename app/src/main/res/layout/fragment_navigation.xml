@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/viewBackground">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <q.rorbin.verticaltablayout.VerticalTabLayout
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="match_parent"
+                android:id="@+id/navigation_vertical_tab"
+                android:background="@color/vertical_tab_layout_bg"
+                app:indicator_color="@color/vertical_tab_layout_indicator_color"
+                app:indicator_gravity="fill"
+                app:tab_height="@dimen/dp_50"
+                app:tab_margin="@dimen/dp_10"
+                app:tab_mode="scrollable"/>
+            <View
+                android:id="@+id/navigation_divider"
+                android:layout_width="@dimen/dp_05"
+                android:layout_height="match_parent"
+                android:background="@color/line_divider" />
 
-    <TextView
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/navigation"/>
-</RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rl_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbarSize="@dimen/dp_10"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+    </FrameLayout>
 </layout>

@@ -27,6 +27,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.HomeViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.home.MainViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeDetailViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.knowledge.KnowledgeViewModel
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.navigation.NavigationViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.wechat.WeChatViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.common_toolbar.*
@@ -129,6 +130,7 @@ class MainActivity : BaseActivity() {
                 Constants.TYPE_HOME -> homeFragment?.scrollTop()
                 Constants.TYPE_KNOWLEDGE -> knowledgeFragment?.scrollTop()
                 Constants.TYPE_WECHAT -> weChatFragment?.scrollTop()
+                Constants.TYPE_NAVIGATION -> navigationFragment?.scrollTop()
                 Constants.TYPE_COLLECT -> collectFragment?.scrollTop()
             }
 
@@ -322,6 +324,7 @@ class MainActivity : BaseActivity() {
     fun obtainKnowledgeModel() :KnowledgeViewModel = initViewModel(KnowledgeViewModel::class.java)
     fun obtainWeChatModel() :WeChatViewModel = initViewModel(WeChatViewModel::class.java)
     fun obtainDetailModel() = initViewModel(KnowledgeDetailViewModel::class.java)
+    fun obtainNavigationModel() = initViewModel(NavigationViewModel::class.java)
 
     override fun onDestroy() {
         super.onDestroy()
