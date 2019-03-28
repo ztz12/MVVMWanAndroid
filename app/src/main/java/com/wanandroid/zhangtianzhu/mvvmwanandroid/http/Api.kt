@@ -102,4 +102,17 @@ interface Api {
      */
     @GET("navi/json")
     fun getNavigationData(): Call<HttpResult<MutableList<NavigationData>>>
+
+    /**
+     * 项目分类
+     */
+    @GET("project/tree/json")
+    fun getProjectData(): Call<HttpResult<MutableList<ProjectTreeData>>>
+
+    /**
+     * 项目列表
+     */
+    @GET("project/list/{pageNum}/json")
+    fun getProjectListData(@Path("pageNum") pageNum: Int,
+                           @Query("cid") cid: Int): Call<HttpResult<ArticleData>>
 }
