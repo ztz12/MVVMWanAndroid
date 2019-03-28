@@ -4,11 +4,8 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.HttpResult
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.RetrofitService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.data.source.wanandroid.MainSourceChange
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Injection
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val _loginOutSuccess = MutableLiveData<Boolean>()
@@ -17,19 +14,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         get() = _loginOutSuccess
 
     fun loginOut() {
-        RetrofitService.service.logout()
-                .enqueue(object : Callback<HttpResult<Any>> {
-                    override fun onFailure(call: Call<HttpResult<Any>>, t: Throwable) {
-                        _loginOutSuccess.value = false
-                    }
+        Injection.provideMainSource().getWanAndroidData(object :MainSourceChange.BaseCallback{
+            override fun success() {
+                _loginOutSuccess.value = true
+            }
 
-                    override fun onResponse(call: Call<HttpResult<Any>>, response: Response<HttpResult<Any>>) {
-                        if (response.isSuccessful) {
-                            val result = response.body()
-                            _loginOutSuccess.value = result?.errorCode == 0
-                        }
-                    }
+            override fun failure(t: Throwable) {
+                _loginOutSuccess.value = false
+            }
 
-                })
+        })
     }
 }

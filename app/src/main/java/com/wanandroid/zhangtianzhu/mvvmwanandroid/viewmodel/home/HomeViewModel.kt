@@ -5,19 +5,15 @@ import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.data.source.collect.CollectSource
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.data.source.wanandroid.BaseSource
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.BannerData
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.HttpResult
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.RetrofitService
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.home.HomeDataRepository
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Injection
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeViewModel constructor(application: Application) : AndroidViewModel(application) {
     val homeResult = HomeDataRepository.getInstance().getDataRepository()
-    private val _bannerData = MutableLiveData<List<BannerData>>()
-    val bannerData: LiveData<List<BannerData>>
+    private val _bannerData = MutableLiveData<MutableList<BannerData>>()
+    val bannerData: LiveData<MutableList<BannerData>>
         get() = _bannerData
 
     private val _collectSuccess = MutableLiveData<Boolean>()
@@ -36,19 +32,14 @@ class HomeViewModel constructor(application: Application) : AndroidViewModel(app
     }
 
     fun getBannerData() {
-        RetrofitService.service.getBannerData().enqueue(object : Callback<HttpResult<List<BannerData>>> {
-            override fun onFailure(call: Call<HttpResult<List<BannerData>>>, t: Throwable) {
-
+        Injection.provideHomeSource().getWanAndroidData(object :BaseSource.BaseCallback<MutableList<BannerData>>{
+            override fun success(data: MutableList<BannerData>) {
+                _bannerData.value = data
             }
 
-            override fun onResponse(call: Call<HttpResult<List<BannerData>>>, response: Response<HttpResult<List<BannerData>>>) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    if (result!!.errorCode == 0) {
-                        _bannerData.value = result.data
-                    }
-                }
+            override fun failure(t: Throwable) {
             }
+
         })
     }
 

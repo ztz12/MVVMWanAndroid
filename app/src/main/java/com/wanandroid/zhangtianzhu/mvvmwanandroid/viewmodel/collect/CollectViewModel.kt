@@ -4,12 +4,9 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.HttpResult
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.RetrofitService
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.data.source.wanandroid.CollectSourceChange
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.collect.CollectDataRepository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Injection
 
 class CollectViewModel constructor(application: Application) : AndroidViewModel(application) {
     val collectViewModel = CollectDataRepository.getInstance().getDataRepository()
@@ -26,21 +23,15 @@ class CollectViewModel constructor(application: Application) : AndroidViewModel(
     }
 
     fun removeCollectItem(id: Int, originId: Int) {
-        RetrofitService.service.removeCollectArticle(id, originId)
-                .enqueue(object : Callback<HttpResult<Any>> {
-                    override fun onFailure(call: Call<HttpResult<Any>>, t: Throwable) {
-                        _removeSuccess.value = false
-                    }
+        Injection.provideCollectRemote().getWanAndroidData(id,originId,object : CollectSourceChange.BaseCallback{
+            override fun success() {
+                _removeSuccess.value = true
+            }
 
-                    override fun onResponse(call: Call<HttpResult<Any>>, response: Response<HttpResult<Any>>) {
-                        if (response.isSuccessful) {
-                            val result = response.body()
-                            if (result?.errorCode == 0) {
-                                _removeSuccess.value = true
-                            }
-                        }
-                    }
+            override fun failure(t: Throwable) {
+                _removeSuccess.value = false
+            }
 
-                })
+        })
     }
 }

@@ -34,7 +34,7 @@ interface Api {
      * 获取轮播图
      */
     @GET("banner/json")
-    fun getBannerData(): Call<HttpResult<List<BannerData>>>
+    fun getBannerData(): Call<HttpResult<MutableList<BannerData>>>
 
     /**
      * 收藏站内文章

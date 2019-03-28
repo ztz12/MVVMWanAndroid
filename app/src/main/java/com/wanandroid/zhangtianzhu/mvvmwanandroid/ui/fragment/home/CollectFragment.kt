@@ -45,9 +45,14 @@ class CollectFragment : BaseFragment() {
         refreshData()
         mAdapter.setOnCollectListener(object : CollectAdapter.OnCollectAdapterListener {
             override fun collectListener(collectionArticle: CollectionArticle, position: Int) {
-                mAdapter.notifyItemRemoved(position)
                 viewModel.removeCollectItem(collectionArticle.id, collectionArticle.originId)
-                DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
+                viewModel.removeSuccess.observe(viewLifecycleOwner, Observer {
+                    if (it!!) {
+                        mAdapter.notifyItemRemoved(position)
+                        mAdapter.notifyDataSetChanged()
+                        DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
+                    }
+                })
             }
 
         })

@@ -16,12 +16,12 @@ fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment,@IdRes id:Int
 
 private inline fun FragmentManager.transact(action: FragmentTransaction.() -> Unit) {
     beginTransaction().apply {
-        setCustomAnimations(
-                com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.grow_fade_in_from_bottom,
-                com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.fade_out,
-                com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.fade_in,
-                com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.shrink_fade_out_from_bottom
-        )
+//        setCustomAnimations(
+//                com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.grow_fade_in_from_bottom,
+//                com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.fade_out,
+//                com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.fade_in,
+//                com.wanandroid.zhangtianzhu.mvvmwanandroid.R.anim.shrink_fade_out_from_bottom
+//        )
         action()
     }.commitAllowingStateLoss()
 }

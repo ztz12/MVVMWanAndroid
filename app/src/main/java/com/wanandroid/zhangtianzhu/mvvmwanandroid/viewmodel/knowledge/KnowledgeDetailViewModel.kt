@@ -7,13 +7,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations.map
 import android.arch.lifecycle.Transformations.switchMap
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.data.source.collect.CollectSource
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.HttpResult
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.RetrofitService
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.knowledge.KnowledgeDetailRepository
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Injection
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class KnowledgeDetailViewModel(application: Application) : AndroidViewModel(application) {
     private val cid = MutableLiveData<Int>()
