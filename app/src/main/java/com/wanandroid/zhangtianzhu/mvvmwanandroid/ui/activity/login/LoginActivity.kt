@@ -8,6 +8,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.bean.event.LoginEvent
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityLoginBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.MainActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.SnackUtils
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.LoginViewModel
@@ -19,6 +20,8 @@ class LoginActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var viewModel: LoginViewModel
+
+    private val mDialog by lazy { DialogUtil.getWaitDialog(this, getString(R.string.login_ing)) }
 
     override fun getLayoutId(): Int = R.layout.activity_login
 
@@ -47,10 +50,14 @@ class LoginActivity : BaseActivity() {
         var showSuccess = true
         var showMsg = true
         if (validate()) {
+            mDialog.show()
             binding.viewmodel?.start(login_account_edit.text.toString(),
                     login_password_edit.text.toString())
             binding.viewmodel?.success?.observe(this, Observer {
                 if (it!! && showSuccess) {
+                    if(mDialog.isShowing){
+                        mDialog.dismiss()
+                    }
                     startActivity<MainActivity>()
                     finish()
                     showSuccess = false

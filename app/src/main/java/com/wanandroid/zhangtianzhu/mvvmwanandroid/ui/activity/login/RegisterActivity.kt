@@ -8,6 +8,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.bean.event.LoginEvent
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityRegisterBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.MainActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.DialogUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.SnackUtils
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.initViewModel
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.viewmodel.login.RegisterViewModel
@@ -19,6 +20,7 @@ class RegisterActivity : BaseActivity() {
 
     private lateinit var viewModel: RegisterViewModel
     private lateinit var binding: ActivityRegisterBinding
+    private val mDialog by lazy { DialogUtil.getWaitDialog(this, getString(R.string.register_ing)) }
 
     override fun initData() {
         binding = getDataBinding() as ActivityRegisterBinding
@@ -52,11 +54,15 @@ class RegisterActivity : BaseActivity() {
         var showSuccess = true
         var showMsg = true
         if (validate()) {
+            mDialog.show()
             binding.viewmodel?.start(register_account_edit.text.toString(),
                     register_password_edit.text.toString(),
                     register_repassword_edit.text.toString())
             binding.viewmodel?.success?.observe(this, Observer {
                 if (it!! && showSuccess) {
+                    if(mDialog.isShowing){
+                        mDialog.dismiss()
+                    }
                     startActivity<MainActivity>()
                     finish()
                     showSuccess = false

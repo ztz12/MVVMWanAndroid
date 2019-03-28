@@ -4,10 +4,12 @@ import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.data.source.collect.CollectSource
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.BannerData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.HttpResult
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.RetrofitService
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.paging.home.HomeDataRepository
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Injection
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -51,32 +53,26 @@ class HomeViewModel constructor(application: Application) : AndroidViewModel(app
     }
 
     fun collect(id: Int) {
-        RetrofitService.service.addCollectArticle(id).enqueue(object : Callback<HttpResult<Any>> {
-            override fun onFailure(call: Call<HttpResult<Any>>, t: Throwable) {
-                _collectSuccess.value = false
+        Injection.provideCollectSource().collect(id,object : CollectSource.CollectCallback{
+            override fun success() {
+                _collectSuccess.value = true
             }
 
-            override fun onResponse(call: Call<HttpResult<Any>>, response: Response<HttpResult<Any>>) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    _collectSuccess.value = result!!.errorCode == 0
-                }
+            override fun failure() {
+                _collectSuccess.value = false
             }
 
         })
     }
 
     fun cancelCollect(id: Int) {
-        RetrofitService.service.cancelCollectArticle(id).enqueue(object : Callback<HttpResult<Any>> {
-            override fun onFailure(call: Call<HttpResult<Any>>, t: Throwable) {
-                _cancelCollectSuccess.value = false
+        Injection.provideCollectSource().cancelCollect(id,object : CollectSource.CollectCallback{
+            override fun success() {
+                _cancelCollectSuccess.value = true
             }
 
-            override fun onResponse(call: Call<HttpResult<Any>>, response: Response<HttpResult<Any>>) {
-                if (response.isSuccessful) {
-                    val result = response.body()
-                    _cancelCollectSuccess.value = result!!.errorCode == 0
-                }
+            override fun failure() {
+                _cancelCollectSuccess.value = false
             }
 
         })

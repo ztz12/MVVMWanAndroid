@@ -71,10 +71,18 @@ class ProjectDetailFragment : BaseFragment() {
                     mAdapter.notifyDataSetChanged()
                     if (collect) {
                         mViewModel.cancelCollect(articleDetail.id)
-                        DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
+                        mViewModel.cancelCollectSuccess.observe(viewLifecycleOwner, Observer {
+                            if(it!!){
+                                DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
+                            }
+                        })
                     } else {
                         mViewModel.collect(articleDetail.id)
-                        DialogUtil.showSnackBar(_mActivity, getString(R.string.collect_success))
+                        mViewModel.collectSuccess.observe(viewLifecycleOwner, Observer {
+                            if(it!!){
+                                DialogUtil.showSnackBar(_mActivity, getString(R.string.collect_success))
+                            }
+                        })
                     }
                 } else {
                     DialogUtil.showSnackBar(_mActivity, getString(R.string.login_tint))

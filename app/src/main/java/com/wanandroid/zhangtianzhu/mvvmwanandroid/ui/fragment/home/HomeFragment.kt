@@ -61,11 +61,17 @@ class HomeFragment : BaseFragment() {
                         mAdapter.notifyDataSetChanged()
                         if (collect) {
                             homeViewModel.cancelCollect(articleDetail.id)
-                            DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
-                        } else {
+                            homeViewModel.cancelCollectSuccess.observe(viewLifecycleOwner, Observer {
+                                if(it!!){
+                                    DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
+                                }
+                            })                        } else {
                             homeViewModel.collect(articleDetail.id)
-                            DialogUtil.showSnackBar(_mActivity, getString(R.string.collect_success))
-                        }
+                            homeViewModel.collectSuccess.observe(viewLifecycleOwner, Observer {
+                                if(it!!){
+                                    DialogUtil.showSnackBar(_mActivity, getString(R.string.collect_success))
+                                }
+                            })                        }
                     } else {
                         DialogUtil.showSnackBar(_mActivity, getString(R.string.login_tint))
                     }
