@@ -33,12 +33,13 @@ class CollectFragment : BaseFragment() {
 
     private fun init() {
         mAdapter = CollectAdapter(_mActivity) { viewModel.retry() }
+        binding.setLifecycleOwner(viewLifecycleOwner)
         binding.rlCollect.run {
             layoutManager = linearManager
             adapter = mAdapter
             itemAnimator = DefaultItemAnimator()
         }
-        viewModel.collectViewModel.observe(this, Observer {
+        viewModel.collectViewModel.observe(viewLifecycleOwner, Observer {
             mAdapter.submitList(it)
         })
         refreshData()

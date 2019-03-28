@@ -36,7 +36,8 @@ class HomeFragment : BaseFragment() {
     private fun init() {
         mDialog.show()
         homeViewModel.getBannerData()
-        homeViewModel.bannerData.observe(_mActivity, Observer { bannerData ->
+        binding.setLifecycleOwner(viewLifecycleOwner)
+        homeViewModel.bannerData.observe(viewLifecycleOwner, Observer { bannerData ->
             if (mDialog.isShowing) {
                 mDialog.dismiss()
             }
@@ -46,7 +47,7 @@ class HomeFragment : BaseFragment() {
                 adapter = mAdapter
                 itemAnimator = DefaultItemAnimator()
             }
-            homeViewModel.homeResult.observe(_mActivity, Observer { mAdapter.submitList(it) })
+            homeViewModel.homeResult.observe(viewLifecycleOwner, Observer { mAdapter.submitList(it) })
             refreshData()
             mAdapter.setOnHomeCollectListener(object : HomeAdapter.OnHomeCollectListener {
                 override fun homeCollectListener(articleDetail: ArticleDetail) {

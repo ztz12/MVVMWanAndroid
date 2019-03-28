@@ -17,7 +17,7 @@ class WeChatFragment : BaseFragment() {
 
     private var mData = mutableListOf<WeChatData>()
 
-    private val mAdapter: WeChatAdapter by lazy { WeChatAdapter(mData,childFragmentManager) }
+    private lateinit var mAdapter: WeChatAdapter
 
     private lateinit var mViewModel: WeChatViewModel
 
@@ -30,11 +30,14 @@ class WeChatFragment : BaseFragment() {
     private fun init() {
         mDialog.show()
         mViewModel.getWeChatData()
-        mViewModel.weChatData.observe(_mActivity, Observer {
+        binding.setLifecycleOwner(viewLifecycleOwner)
+        //使用viewLifecycleOwner而不是使用_mActivity，观察者根据LifecycleView变化更新，也避免childFragmentManager无法依附于当前Activity
+        mViewModel.weChatData.observe(viewLifecycleOwner, Observer {
             if (mDialog.isShowing) {
                 mDialog.dismiss()
             }
             mData = it!!
+            mAdapter = WeChatAdapter(it, childFragmentManager)
             binding.vpWeChat.run {
                 adapter = mAdapter
                 addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.weChatTabLayout))

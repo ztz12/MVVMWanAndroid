@@ -30,12 +30,13 @@ class KnowledgeFragment : BaseFragment() {
 
     private fun init() {
         mAdapter = KnowledgeAdapter(_mActivity) { mViewHolder.retry() }
+        binding.setLifecycleOwner(viewLifecycleOwner)
         binding.rlKnowledge.run {
             layoutManager = linearManager
             adapter = mAdapter
             itemAnimator = DefaultItemAnimator()
         }
-        mViewHolder.knowledgeViewModel.observe(this, Observer {
+        mViewHolder.knowledgeViewModel.observe(viewLifecycleOwner, Observer {
             mAdapter.submitList(it)
         })
         refreshData()

@@ -29,14 +29,14 @@ class KnowledgeDetailFragment : BaseFragment() {
 
     private lateinit var mAdapter: KnowledgeDetailAdapter
 
-    private val linearManager: LinearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
+    private val linearLayoutManager by lazy { LinearLayoutManager(_mActivity) }
 
     override fun initData() {
         binding = getDataBinding() as FragmentKnowledgeDetailBinding
         cid = arguments?.getInt(Constants.CONTENT_CID_KEY) ?: 0
-        if(_mActivity is KnowledgeListActivity) {
+        if (_mActivity is KnowledgeListActivity) {
             mViewModel = (_mActivity as KnowledgeListActivity).obtainDetailModel()
-        }else if(_mActivity is MainActivity){
+        } else if (_mActivity is MainActivity) {
             mViewModel = (_mActivity as MainActivity).obtainDetailModel()
         }
         mViewModel.changeCid(cid)
@@ -45,8 +45,9 @@ class KnowledgeDetailFragment : BaseFragment() {
 
     private fun init() {
         mAdapter = KnowledgeDetailAdapter(context!!) { mViewModel.retry() }
+        binding.setLifecycleOwner(viewLifecycleOwner)
         binding.rlKnowledgeDetail.run {
-            layoutManager = linearManager
+            layoutManager = linearLayoutManager
             adapter = mAdapter
             itemAnimator = DefaultItemAnimator()
         }
@@ -81,7 +82,7 @@ class KnowledgeDetailFragment : BaseFragment() {
 
     fun scrollTop() {
         binding.rlKnowledgeDetail.run {
-            if (linearManager.findFirstVisibleItemPosition() > 20) {
+            if (linearLayoutManager.findFirstVisibleItemPosition() > 20) {
                 scrollToPosition(0)
             } else {
                 smoothScrollToPosition(0)
