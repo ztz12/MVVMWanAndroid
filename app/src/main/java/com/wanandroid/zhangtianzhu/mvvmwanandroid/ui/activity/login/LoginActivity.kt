@@ -61,6 +61,7 @@ class LoginActivity : BaseActivity() {
                     startActivity<MainActivity>()
                     finish()
                     showSuccess = false
+                    isFirstIn = false
                 }
             })
             binding.viewmodel?.loginData?.observe(this, Observer { loginData ->

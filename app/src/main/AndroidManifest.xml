@@ -18,7 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.home.AboutUsActivity"></activity>
+        <activity android:name=".ui.activity.guide.GuideActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/GuideTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.activity.home.AboutUsActivity" />
         <activity
             android:name=".ui.activity.knowledge.KnowledgeListActivity"
             android:launchMode="singleTask"
@@ -34,13 +43,7 @@
         <activity
             android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity android:name=".ui.activity.RecyclerBindingActivity" />
         <activity
             android:name=".ui.activity.login.RegisterActivity"
@@ -49,7 +52,7 @@
         <activity
             android:name=".ui.activity.login.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.home.ContentActivity"
             android:launchMode="singleTask"

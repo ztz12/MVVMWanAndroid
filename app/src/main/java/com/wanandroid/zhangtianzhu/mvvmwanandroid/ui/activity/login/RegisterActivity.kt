@@ -67,6 +67,7 @@ class RegisterActivity : BaseActivity() {
                     finish()
                     showSuccess = false
                     isLogin = true
+                    isFirstIn = false
                 }
             })
             binding.viewmodel?.loginData?.observe(this, Observer { loginData ->

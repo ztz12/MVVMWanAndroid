@@ -17,6 +17,8 @@ abstract class BaseActivity : SupportActivity() {
 
     protected var isLogin by Preference(Constants.ISLOGIN, false)
 
+    protected var isFirstIn by Preference(Constants.ISFIRSTIN, true)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init(savedInstanceState)
