@@ -267,6 +267,13 @@ class MainActivity : BaseActivity() {
             true
         }
 
+        navigation.menu.findItem(R.id.nav_item_clear).setOnMenuItemClickListener {
+            CacheDataUtil.clearAllCache(this)
+            DialogUtil.showSnackBar(this, getString(R.string.clear_success))
+            closeDrawer()
+            true
+        }
+
         //退出登录
         navigation.menu.findItem(R.id.nav_item_logout).run {
             isVisible = isLogin
