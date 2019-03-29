@@ -15,6 +15,8 @@ import me.yokeyword.fragmentation.SupportFragment
 
 abstract class BaseFragment : SupportFragment() {
 
+    private var clickTime: Long = 0
+
     private var themeCount = 0
 
     private lateinit var viewDataBinding: ViewDataBinding
@@ -37,6 +39,21 @@ abstract class BaseFragment : SupportFragment() {
     private fun init() {
         getDataBinding()
         initData()
+    }
+
+    override fun onBackPressedSupport(): Boolean {
+        if (childFragmentManager.backStackEntryCount > 1) {
+            popChild()
+        } else {
+            val currentTime = System.currentTimeMillis()
+            if (currentTime.minus(clickTime) > Constants.DELAY_TIME) {
+                DialogUtil.showSnackBar(_mActivity, getString(R.string.double_click_exit_tint))
+                clickTime = System.currentTimeMillis()
+            } else {
+                _mActivity.finish()
+            }
+        }
+        return true
     }
 
     protected fun setRefreshThemeColor(refreshLayout: SmartRefreshLayout) {
