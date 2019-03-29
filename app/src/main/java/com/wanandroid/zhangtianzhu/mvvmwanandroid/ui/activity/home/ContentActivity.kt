@@ -1,6 +1,5 @@
 package com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.home
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -14,17 +13,15 @@ import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import com.just.agentweb.AgentWeb
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseSwipeBackActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.BannerData
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.StatusBarUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.getAgent
 import kotlinx.android.synthetic.main.agent_container.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 
-class ContentActivity : BaseActivity() {
+class ContentActivity : BaseSwipeBackActivity() {
 
 
     private var agentWeb: AgentWeb? = null

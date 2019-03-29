@@ -12,14 +12,14 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader
 import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener
 import com.scwang.smartrefresh.layout.util.DensityUtil
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseSwipeBackActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityAboutUsBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.ElasticOutInterpolator
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_about_us.*
 import kotlinx.android.synthetic.main.content_about.*
 
-class AboutUsActivity : BaseActivity() {
+class AboutUsActivity : BaseSwipeBackActivity() {
 
     private lateinit var binding: ActivityAboutUsBinding
 
