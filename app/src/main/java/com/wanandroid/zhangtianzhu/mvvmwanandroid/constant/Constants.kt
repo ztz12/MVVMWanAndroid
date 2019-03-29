@@ -7,8 +7,6 @@ import java.io.File
 
 object Constants {
 
-    const val BUGLY_ID = "963067f3a0"
-
     const val BASE_URl = "https://www.wanandroid.com/"
 
     const val USERNAME = "username"
@@ -25,7 +23,6 @@ object Constants {
     const val UNCOLLECTIONS_WEBSITE = "lg/uncollect"
     const val ARTICLE_WEBSITE = "article"
     const val TODO_WEBSITE = "lg/todo"
-    const val HAVE_NETWORK = "have_network"
 
     const val SET_COOKIE_KEY = "set-cookie"
     const val COOKIE_NAME = "Cookie"
@@ -96,20 +93,6 @@ object Constants {
      * content data key
      */
     const val CONTENT_DATA_KEY = "content_data"
-
-    const val TYPE_KEY = "type"
-
-    const val SEARCH_KEY = "search_key"
-
-    const val TODO_TYPE = "todo_type"
-    const val TODO_BEAN = "todo_bean"
-    const val TODO_NO = "todo_no"
-    const val TODO_ADD = "todo_add"
-    const val TODO_DONE = "todo_done"
-
-    const val ADD_TODO_TYPE_KEY = "add_todo_type_key"
-    const val SEE_TODO_TYPE_KEY = "see_todo_type_key"
-    const val EDIT_TODO_TYPE_KEY = "edit_todo_type_key"
 
     fun encodeCookie(cookies: List<String>): String {
         val sb = StringBuilder()
