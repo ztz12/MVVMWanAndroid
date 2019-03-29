@@ -1,6 +1,5 @@
 package com.wanandroid.zhangtianzhu.mvvmwanandroid.adapter.collect
 
-import android.app.Activity
 import android.arch.paging.PagedListAdapter
 import android.content.Context
 import android.content.Intent
@@ -20,10 +19,11 @@ class CollectAdapter constructor(private val context: Context, private val retry
         holder.bindCollectData(getItem(position), holder)
         holder.itemView.tag = getItem(position)
         holder.itemView.setOnClickListener(onClickListener)
+        val list = currentList!!.toList().toMutableList()
         holder.setOnCollectListener(object : CollectViewHolder.OnItemCollectListener {
             override fun onCollectListener(collectionArticle: CollectionArticle) {
                 if (onCollectAdapterListener != null) {
-                    onCollectAdapterListener?.collectListener(collectionArticle,position)
+                    onCollectAdapterListener?.collectListener(collectionArticle,position,list)
                 }
             }
         })
@@ -61,6 +61,6 @@ class CollectAdapter constructor(private val context: Context, private val retry
     }
 
     interface OnCollectAdapterListener {
-        fun collectListener(collectionArticle: CollectionArticle,position: Int)
+        fun collectListener(collectionArticle: CollectionArticle,position: Int,list:MutableList<CollectionArticle>)
     }
 }

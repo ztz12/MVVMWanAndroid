@@ -15,8 +15,8 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.bean.event.LoginEvent
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityMainBinding
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.login.LoginActivity
-import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.home.CollectFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.home.HomeFragment
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.home.MainCollectFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.knowledge.KnowledgeFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.navigation.NavigationFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.project.ProjectFragment
@@ -49,7 +49,7 @@ class MainActivity : BaseActivity() {
     private var weChatFragment: WeChatFragment? = null
     private var navigationFragment: NavigationFragment? = null
     private var projectFragment: ProjectFragment? = null
-    private var collectFragment: CollectFragment? = null
+    private var mainCollectFragment: MainCollectFragment? = null
 
     private var tvUser: TextView? = null
 
@@ -134,7 +134,7 @@ class MainActivity : BaseActivity() {
                 Constants.TYPE_WECHAT -> weChatFragment?.scrollTop()
                 Constants.TYPE_NAVIGATION -> navigationFragment?.scrollTop()
                 Constants.TYPE_PROJECT -> projectFragment?.scrollTop()
-                Constants.TYPE_COLLECT -> collectFragment?.scrollTop()
+                Constants.TYPE_COLLECT -> mainCollectFragment?.scrollTop()
             }
 
         }
@@ -229,9 +229,10 @@ class MainActivity : BaseActivity() {
             mType = Constants.TYPE_COLLECT
             if (isLogin) {
                 if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_COLLECT)) {
-                    CollectFragment.newInstance().also {
-                        collectFragment = it
+                    MainCollectFragment.newInstance().also {
+                        mainCollectFragment = it
                         replaceFragmentInActivity(it, R.id.fl_page, Constants.TYPE_COLLECT)
+                        common_toolbar_title_tv.text = Constants.TYPE_COLLECT
                     }
                 }
                 bottom_navigation_view.visibility = View.INVISIBLE
@@ -324,8 +325,8 @@ class MainActivity : BaseActivity() {
     private fun obtainMainModel(): MainViewModel = initViewModel(MainViewModel::class.java)
     fun obtainHomeModel(): HomeViewModel = initViewModel(HomeViewModel::class.java)
     fun obtainCollectModel(): CollectViewModel = initViewModel(CollectViewModel::class.java)
-    fun obtainKnowledgeModel() :KnowledgeViewModel = initViewModel(KnowledgeViewModel::class.java)
-    fun obtainWeChatModel() :WeChatViewModel = initViewModel(WeChatViewModel::class.java)
+    fun obtainKnowledgeModel(): KnowledgeViewModel = initViewModel(KnowledgeViewModel::class.java)
+    fun obtainWeChatModel(): WeChatViewModel = initViewModel(WeChatViewModel::class.java)
     fun obtainDetailModel() = initViewModel(KnowledgeDetailViewModel::class.java)
     fun obtainNavigationModel() = initViewModel(NavigationViewModel::class.java)
     fun obtainProjectModel() = initViewModel(ProjectViewModel::class.java)
@@ -338,6 +339,6 @@ class MainActivity : BaseActivity() {
         weChatFragment = null
         navigationFragment = null
         projectFragment = null
-        collectFragment = null
+        mainCollectFragment = null
     }
 }

@@ -76,7 +76,7 @@ data class Tag(
 
 data class CollectionResponseBody(
         @Json(name = "curPage") val curPage: Int,
-        @Json(name = "datas") val datas: List<CollectionArticle>,
+        @Json(name = "datas") val datas: MutableList<CollectionArticle>,
         @Json(name = "offset") val offset: Int,
         @Json(name = "over") val over: Boolean,
         @Json(name = "pageCount") val pageCount: Int,
