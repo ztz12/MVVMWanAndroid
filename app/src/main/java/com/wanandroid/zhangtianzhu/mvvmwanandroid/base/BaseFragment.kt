@@ -59,15 +59,22 @@ abstract class BaseFragment : SupportFragment() {
     protected fun setRefreshThemeColor(refreshLayout: SmartRefreshLayout) {
         themeCount++
         when {
-            themeCount % Constants.FOUR === Constants.ONE ->
+            themeCount % Constants.FOUR == Constants.ONE ->
                 refreshLayout.setPrimaryColorsId(Constants.BLUE_THEME, R.color.white)
-            themeCount % Constants.FOUR === Constants.TWO ->
+            themeCount % Constants.FOUR == Constants.TWO ->
                 refreshLayout.setPrimaryColorsId(Constants.GREEN_THEME, R.color.white)
-            themeCount % Constants.FOUR === Constants.THREE ->
+            themeCount % Constants.FOUR == Constants.THREE ->
                 refreshLayout.setPrimaryColorsId(Constants.RED_THEME, R.color.white)
-            themeCount % Constants.FOUR === Constants.ZERO ->
+            themeCount % Constants.FOUR == Constants.ZERO ->
                 refreshLayout.setPrimaryColorsId(Constants.ORANGE_THEME, R.color.white)
         }
+    }
+
+    override fun onDestroy() {
+        if (mDialog.isShowing) {
+            mDialog.dismiss()
+        }
+        super.onDestroy()
     }
 
     abstract fun getLayoutId(): Int
