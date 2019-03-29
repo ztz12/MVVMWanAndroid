@@ -48,35 +48,41 @@ class HomeFragment : BaseFragment() {
                 itemAnimator = DefaultItemAnimator()
             }
             homeViewModel.homeResult.observe(viewLifecycleOwner, Observer { mAdapter.submitList(it) })
+            homeCollect()
             refreshData()
-            mAdapter.setOnHomeCollectListener(object : HomeAdapter.OnHomeCollectListener {
-                override fun homeCollectListener(articleDetail: ArticleDetail) {
-                    if (isLogin) {
-                        if (!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)) {
-                            DialogUtil.showSnackBar(_mActivity, getString(R.string.http_error))
-                            return
-                        }
-                        val collect = articleDetail.collect
-                        articleDetail.collect = !collect
-                        mAdapter.notifyDataSetChanged()
-                        if (collect) {
-                            homeViewModel.cancelCollect(articleDetail.id)
-                            homeViewModel.cancelCollectSuccess.observe(viewLifecycleOwner, Observer {
-                                if(it!!){
-                                    DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
-                                }
-                            })                        } else {
-                            homeViewModel.collect(articleDetail.id)
-                            homeViewModel.collectSuccess.observe(viewLifecycleOwner, Observer {
-                                if(it!!){
-                                    DialogUtil.showSnackBar(_mActivity, getString(R.string.collect_success))
-                                }
-                            })                        }
-                    } else {
-                        DialogUtil.showSnackBar(_mActivity, getString(R.string.login_tint))
+        })
+    }
+
+    private fun homeCollect() {
+        mAdapter.setOnHomeCollectListener(object : HomeAdapter.OnHomeCollectListener {
+            override fun homeCollectListener(articleDetail: ArticleDetail) {
+                if (isLogin) {
+                    if (!NetWorkUtils.isNetWorkAvailable(WanAndroidApplication.context)) {
+                        DialogUtil.showSnackBar(_mActivity, getString(R.string.http_error))
+                        return
                     }
+                    val collect = articleDetail.collect
+                    articleDetail.collect = !collect
+                    mAdapter.notifyDataSetChanged()
+                    if (collect) {
+                        homeViewModel.cancelCollect(articleDetail.id)
+                        homeViewModel.cancelCollectSuccess.observe(viewLifecycleOwner, Observer {
+                            if (it!!) {
+                                DialogUtil.showSnackBar(_mActivity, getString(R.string.cancel_collect_success))
+                            }
+                        })
+                    } else {
+                        homeViewModel.collect(articleDetail.id)
+                        homeViewModel.collectSuccess.observe(viewLifecycleOwner, Observer {
+                            if (it!!) {
+                                DialogUtil.showSnackBar(_mActivity, getString(R.string.collect_success))
+                            }
+                        })
+                    }
+                } else {
+                    DialogUtil.showSnackBar(_mActivity, getString(R.string.login_tint))
                 }
-            })
+            }
         })
     }
 
