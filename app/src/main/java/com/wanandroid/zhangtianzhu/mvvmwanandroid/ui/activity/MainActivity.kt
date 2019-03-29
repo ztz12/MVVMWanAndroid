@@ -40,6 +40,7 @@ import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.uiThread
+import java.lang.StringBuilder
 
 class MainActivity : BaseActivity() {
 
@@ -268,8 +269,12 @@ class MainActivity : BaseActivity() {
         }
 
         navigation.menu.findItem(R.id.nav_item_clear).setOnMenuItemClickListener {
+            val sb = StringBuilder()
+            sb.append(CacheDataUtil.getTotalCacheSize(this))
+                    .append("缓存 ")
+                    .append(getString(R.string.clear_success))
+            DialogUtil.showSnackBar(this, sb.toString())
             CacheDataUtil.clearAllCache(this)
-            DialogUtil.showSnackBar(this, getString(R.string.clear_success))
             closeDrawer()
             true
         }
