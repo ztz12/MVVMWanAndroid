@@ -14,7 +14,7 @@ open class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         mViews = SparseArray()
     }
 
-    private fun <T : View> getView(viewId: Int): T {
+    private fun <T : View> getView(@IdRes viewId: Int): T {
         var view = mViews[viewId]
         if (view == null) {
             view = itemView.findViewById(viewId)
