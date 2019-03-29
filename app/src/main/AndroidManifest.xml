@@ -18,9 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.knowledge.KnowledgeListActivity"
+        <activity android:name=".ui.activity.home.AboutUsActivity"></activity>
+        <activity
+            android:name=".ui.activity.knowledge.KnowledgeListActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="design_width_in_dp"
@@ -43,12 +45,11 @@
         <activity
             android:name=".ui.activity.login.RegisterActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.login.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.activity.home.ContentActivity"
             android:launchMode="singleTask"

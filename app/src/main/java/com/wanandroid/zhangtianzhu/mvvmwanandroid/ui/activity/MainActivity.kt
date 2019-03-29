@@ -14,6 +14,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.bean.event.LoginEvent
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.databinding.ActivityMainBinding
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.home.AboutUsActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.login.LoginActivity
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.home.HomeFragment
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.fragment.home.MainCollectFragment
@@ -244,11 +245,6 @@ class MainActivity : BaseActivity() {
             true
         }
 
-        navigation.menu.findItem(R.id.nav_item_setting).setOnMenuItemClickListener {
-            closeDrawer()
-            true
-        }
-
         navigation.menu.findItem(R.id.nav_item_home).setOnMenuItemClickListener {
             mType = Constants.TYPE_HOME
             if (null == supportFragmentManager.findFragmentByTag(Constants.TYPE_HOME)) {
@@ -266,11 +262,7 @@ class MainActivity : BaseActivity() {
         }
 
         navigation.menu.findItem(R.id.nav_item_about_us).setOnMenuItemClickListener {
-            closeDrawer()
-            true
-        }
-
-        navigation.menu.findItem(R.id.nav_item_todo).setOnMenuItemClickListener {
+            startActivity<AboutUsActivity>()
             closeDrawer()
             true
         }
