@@ -1,10 +1,10 @@
 package com.wanandroid.zhangtianzhu.mvvmwanandroid.http
 
-import com.example.zhangtianzhu.wanandroidkotlin.http.interceptor.HeaderInterceptor
-import com.example.zhangtianzhu.wanandroidkotlin.http.interceptor.SaveCookieInterceptor
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.BuildConfig
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.interceptor.CacheInterceptor
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.interceptor.HeaderInterceptor
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.interceptor.SaveCookieInterceptor
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

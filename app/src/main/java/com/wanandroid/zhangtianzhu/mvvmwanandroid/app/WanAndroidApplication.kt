@@ -7,10 +7,10 @@ import org.litepal.LitePal
 import org.litepal.LitePalApplication
 import kotlin.properties.Delegates
 
-class WanAndroidApplication:LitePalApplication() {
+class WanAndroidApplication : LitePalApplication() {
 
     companion object {
-        var context:Context by Delegates.notNull()
+        var context: Context by Delegates.notNull()
     }
 
     override fun onCreate() {
@@ -20,7 +20,7 @@ class WanAndroidApplication:LitePalApplication() {
         initLitePal()
     }
 
-    private fun initLitePal(){
+    private fun initLitePal() {
         LitePal.initialize(this)
     }
 

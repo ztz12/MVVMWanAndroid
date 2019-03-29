@@ -1,4 +1,4 @@
-package com.example.zhangtianzhu.wanandroidkotlin.http.interceptor
+package com.wanandroid.zhangtianzhu.mvvmwanandroid.http.interceptor
 
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.Preference
@@ -21,8 +21,8 @@ class HeaderInterceptor : Interceptor {
         val builder = request.newBuilder()
 
         builder.addHeader("Content-type", "application/json; charset=utf-8")
-                // .header("token", token)
-                // .method(request.method(), request.body())
+        // .header("token", token)
+        // .method(request.method(), request.body())
 
         val domain = request.url().host()
         val url = request.url().toString()
