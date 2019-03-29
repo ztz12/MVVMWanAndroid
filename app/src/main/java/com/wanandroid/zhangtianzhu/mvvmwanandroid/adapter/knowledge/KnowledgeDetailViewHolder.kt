@@ -1,50 +1,44 @@
 package com.wanandroid.zhangtianzhu.mvvmwanandroid.adapter.knowledge
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.R
+import com.wanandroid.zhangtianzhu.mvvmwanandroid.base.BaseViewHolder
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.http.ArticleDetail
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.util.ImageLoader
 
-class KnowledgeDetailViewHolder(parent:ViewGroup,private val context: Context):RecyclerView.ViewHolder(
-    LayoutInflater.from(parent.context).inflate(R.layout.item_knowledge_detail,parent,false)
-){
-    private val tvAuthor = itemView.findViewById<TextView>(R.id.tv_knowledge_author)
-    private val tvDate = itemView.findViewById<TextView>(R.id.tv_knowledge_date)
-    private val tvChapterName = itemView.findViewById<TextView>(R.id.tv_knowledge_chapterName)
+class KnowledgeDetailViewHolder(parent: ViewGroup, private val context: Context) : BaseViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.item_knowledge_detail, parent, false)
+) {
     private val ivPic = itemView.findViewById<ImageView>(R.id.iv_knowledge_pic)
-    private val tvArticle = itemView.findViewById<TextView>(R.id.tv_article)
-    private val ivLike = itemView.findViewById<ImageView>(R.id.iv_knowledge)
 
-    fun bindDetailData(item:ArticleDetail?,holder: KnowledgeDetailViewHolder){
+    fun bindDetailData(item: ArticleDetail?) {
         item ?: return
-        tvArticle.text = item.title
-        tvDate.text = item.niceDate
-        tvAuthor.text = item.author
-        tvChapterName.text = item.chapterName
+        setTextView(R.id.tv_article, item.title)
+        setTextView(R.id.tv_knowledge_date, item.niceDate)
+        setTextView(R.id.tv_knowledge_author, item.author)
+        setTextView(R.id.tv_knowledge_chapterName, item.chapterName)
         if (item.collect) {
-            ivLike.setImageResource(R.drawable.icon_like)
+            setImageResource(R.id.iv_knowledge, R.drawable.icon_like)
         } else {
-            ivLike.setImageResource(R.drawable.icon_like_article_not_selected)
+            setImageResource(R.id.iv_knowledge, R.drawable.icon_like_article_not_selected)
         }
         if (item.envelopePic.isNotEmpty()) {
-            ivPic.visibility = View.VISIBLE
+            setViewVisibility(R.id.iv_knowledge_pic, true)
             context.let {
                 ImageLoader.load(it, ivPic, item.envelopePic)
             }
         } else {
-            ivPic.visibility = View.GONE
+            setViewVisibility(R.id.iv_knowledge_pic, false)
         }
-        holder.ivLike.setOnClickListener {
+        setOnClickListener(R.id.iv_knowledge, View.OnClickListener {
             if (onItemCollectListener != null) {
                 onItemCollectListener?.onCollectListener(item)
             }
-        }
+        })
     }
 
     private var onItemCollectListener: OnItemKnowledgeListener? = null

@@ -4,7 +4,6 @@ import android.arch.paging.PagedListAdapter
 import android.content.Context
 import android.content.Intent
 import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.wanandroid.zhangtianzhu.mvvmwanandroid.constant.Constants
@@ -15,7 +14,7 @@ class KnowledgeDetailAdapter (val context: Context, private val retryCallback: (
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): KnowledgeDetailViewHolder = KnowledgeDetailViewHolder(p0,context)
 
     override fun onBindViewHolder(holder: KnowledgeDetailViewHolder, position: Int) {
-        holder.bindDetailData(getItem(position),holder)
+        holder.bindDetailData(getItem(position))
         holder.itemView.tag = getItem(position)
         holder.itemView.setOnClickListener(onClickListener)
         holder.setOnCollectListener(object :KnowledgeDetailViewHolder.OnItemKnowledgeListener{

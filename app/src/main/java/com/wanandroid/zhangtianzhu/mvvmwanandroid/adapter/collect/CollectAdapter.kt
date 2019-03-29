@@ -16,7 +16,7 @@ class CollectAdapter constructor(private val context: Context, private val retry
     }
 
     override fun onBindViewHolder(holder: CollectViewHolder, position: Int) {
-        holder.bindCollectData(getItem(position), holder)
+        holder.bindCollectData(getItem(position))
         holder.itemView.tag = getItem(position)
         holder.itemView.setOnClickListener(onClickListener)
         val list = currentList!!.toList().toMutableList()

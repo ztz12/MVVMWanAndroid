@@ -28,7 +28,7 @@ class HomeAdapter constructor(private val context: Context, private val bannerDa
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HomeViewHolder -> {
-                holder.bindArticle(getItem(position - 1), holder)
+                holder.bindArticle(getItem(position - 1))
                 holder.itemView.tag = getItem(position - 1)
                 holder.itemView.setOnClickListener(onClickListener)
                 holder.setOnCollectListener(object : HomeViewHolder.OnItemCollectListener {

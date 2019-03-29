@@ -12,7 +12,7 @@ import com.wanandroid.zhangtianzhu.mvvmwanandroid.ui.activity.knowledge.Knowledg
 
 class KnowledgeAdapter(private val context: Context, private val retryCallback: () -> Unit) : PagedListAdapter<KnowledgeTreeData, KnowledgeViewHolder>(itemCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): KnowledgeViewHolder {
-        return KnowledgeViewHolder(parent, context)
+        return KnowledgeViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: KnowledgeViewHolder, position: Int) {

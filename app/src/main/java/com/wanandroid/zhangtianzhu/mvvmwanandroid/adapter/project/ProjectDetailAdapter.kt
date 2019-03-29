@@ -15,7 +15,7 @@ class ProjectDetailAdapter(val context: Context, private val retryCallback: () -
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ProjectDetailViewHolder = ProjectDetailViewHolder(p0, context)
 
     override fun onBindViewHolder(holder: ProjectDetailViewHolder, position: Int) {
-        holder.bindDetailData(getItem(position), holder)
+        holder.bindDetailData(getItem(position))
         holder.itemView.tag = getItem(position)
         holder.itemView.setOnClickListener(onClickListener)
         holder.setOnCollectListener(object : ProjectDetailViewHolder.OnItemProjectListener {
