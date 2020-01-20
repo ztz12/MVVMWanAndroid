@@ -61,6 +61,7 @@ class LoginActivity : BaseActivity() {
                     startActivity<MainActivity>()
                     finish()
                     showSuccess = false
+                    isLogin = true
                     isFirstIn = false
                 }
             })
